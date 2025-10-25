@@ -1,14 +1,11 @@
 // Módulo de Regula Falsi - Usa math.js para parsear funciones y Chart.js para graficar
 // Las librerías se cargan globalmente desde CDN en index.html
-
+(function() {
 let currentFunctionRF = null
 let currentChartRF = null
 let resultChartRF = null
 
 // Importación de math.js y Chart.js
-const math = window.math
-const Chart = window.Chart
-
 window.initializeRegulaFalsi = () => {
   console.log("[v0] Inicializando módulo de Regula Falsi...")
 
@@ -430,3 +427,4 @@ function plotFunctionWithRootRF(root, a, b) {
     },
   })
 }
+})();

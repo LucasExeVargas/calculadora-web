@@ -1,247 +1,300 @@
-// Módulo del Convertidor de Bases Numéricas
+// Módulo de Convertidor de Bases Numéricas con Punto Flotante
 
-class ConversorBases {
-  constructor() {
-    this.initialized = false
+window.initializeConversor = () => {
+  console.log("[v0] Inicializando módulo de convertidor...")
+
+  const convertBtn = document.getElementById("convert-btn")
+  const inputNumber = document.getElementById("input-number")
+  const inputBase = document.getElementById("input-base")
+  const outputBase = document.getElementById("output-base")
+  const precision = document.getElementById("precision")
+
+  if (!convertBtn || !inputNumber || !inputBase || !outputBase || !precision) {
+    console.error("[v0] Error: No se encontraron todos los elementos necesarios")
+    return
   }
 
-  init() {
-    if (this.initialized) return
+  // Reemplazar botón para limpiar listeners anteriores
+  const newConvertBtn = convertBtn.cloneNode(true)
+  convertBtn.replaceWith(newConvertBtn)
 
-    const convertBtn = document.getElementById("convert-btn")
-    const inputNumber = document.getElementById("input-number")
+  // Permitir Enter en el campo de número
+  inputNumber.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      newConvertBtn.click()
+    }
+  })
 
-    if (!convertBtn || !inputNumber) return
+  // Botón Convertir
+  newConvertBtn.addEventListener("click", () => {
+    const number = inputNumber.value.trim()
+    const inBase = Number.parseInt(inputBase.value)
+    const outBase = Number.parseInt(outputBase.value)
+    const prec = Number.parseInt(precision.value)
 
-    this.initialized = true
-
-    // Permitir Enter en el campo de entrada
-    inputNumber.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") {
-        convertBtn.click()
-      }
-    })
-
-    convertBtn.addEventListener("click", () => this.handleConversion())
-  }
-
-  handleConversion() {
-    const number = document.getElementById("input-number").value.trim()
-    const inBase = Number.parseInt(document.getElementById("input-base").value)
-    const outBase = Number.parseInt(document.getElementById("output-base").value)
-    const prec = Number.parseInt(document.getElementById("precision").value)
-
-    const errorIcon = document.getElementById("error-icon")
-    const errorMessage = document.getElementById("error-message")
-    const resultsSection = document.getElementById("results-section")
-
-    // Limpiar errores previos
-    errorIcon.style.display = "none"
-    errorMessage.style.display = "none"
-
-    // Validar entrada
-    if (!number) {
-      this.showError("Por favor, introduce un número")
+    // Validaciones
+    const validation = validateInput(number, inBase, prec)
+    if (!validation.valid) {
+      showError(validation.error)
       return
     }
 
-    // Validar que el número sea válido para la base especificada
-    const validationError = this.validateNumber(number, inBase)
-    if (validationError) {
-      this.showError(validationError)
-      return
-    }
-
-    // Realizar conversión
     try {
-      const results = this.convertNumber(number, inBase, outBase, prec)
-      this.displayResults(results)
-      resultsSection.style.display = "block"
+      // Convertir a decimal primero
+      const decimalValue = convertToDecimal(number, inBase)
+      console.log("[v0] Valor en decimal:", decimalValue)
+
+      // Convertir de decimal a la base destino
+      const result = convertFromDecimal(decimalValue, outBase, prec)
+
+      // Mostrar resultados
+      displayResults(number, inBase, outBase, prec, result)
+      hideError()
     } catch (error) {
-      this.showError("Error en la conversión: " + error.message)
+      showError("Error en la conversión: " + error.message)
     }
+  })
+
+  console.log("[v0] Módulo de convertidor inicializado correctamente")
+}
+
+function validateInput(number, base, precision) {
+  // Verificar que hay algo escrito
+  if (!number || number.length === 0) {
+    return { valid: false, error: "Por favor, ingrese un número" }
   }
 
-  showError(message) {
-    const errorIcon = document.getElementById("error-icon")
-    const errorMessage = document.getElementById("error-message")
-    const resultsSection = document.getElementById("results-section")
-
-    errorIcon.style.display = "block"
-    errorMessage.style.display = "block"
-    errorMessage.textContent = message
-    resultsSection.style.display = "none"
+  // Verificar que la precisión es válida
+  if (isNaN(precision) || precision < 1 || precision > 100) {
+    return { valid: false, error: "La precisión debe estar entre 1 y 100" }
   }
 
-  validateNumber(number, base) {
-    const upperNumber = number.toUpperCase()
-    const validChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".substring(0, base)
+  // Verificar que el número tiene formato válido (solo dígitos y un punto)
+  const parts = number.split(".")
+  if (parts.length > 2) {
+    return { valid: false, error: "El número no puede tener más de un punto decimal" }
+  }
 
-    // Verificar si contiene punto (separador decimal)
-    const parts = upperNumber.split(".")
-    if (parts.length > 2) {
-      return "El número no puede contener más de un punto decimal"
-    }
-
-    // Validar cada parte
-    for (const part of parts) {
-      if (!part) {
-        return "Formato inválido: no puede haber puntos al inicio o final"
-      }
-      for (const char of part) {
-        if (!validChars.includes(char)) {
-          return `El dígito '${char}' no es válido en base ${base}. Dígitos válidos: ${validChars}`
-        }
+  // Validar que todos los caracteres sean válidos para la base
+  const validChars = getValidCharsForBase(base)
+  for (const char of number.toLowerCase()) {
+    if (char !== "." && !validChars.includes(char)) {
+      return {
+        valid: false,
+        error: `El carácter '${char}' no es válido para base ${base}. Caracteres válidos: ${validChars.join(", ")}`,
       }
     }
-
-    return null
   }
 
-  convertNumber(number, inBase, outBase, precision) {
-    const upperNumber = number.toUpperCase()
-    const [integerPart, decimalPart] = upperNumber.split(".")
+  return { valid: true }
+}
 
-    // Convertir parte entera a decimal
-    let decimalInteger = 0
-    for (let i = 0; i < integerPart.length; i++) {
-      const digit = integerPart.charCodeAt(i) - (integerPart[i] >= "A" ? 55 : 48)
-      decimalInteger = decimalInteger * inBase + digit
-    }
+function getValidCharsForBase(base) {
+  const chars = {
+    2: ["0", "1"],
+    8: ["0", "1", "2", "3", "4", "5", "6", "7"],
+    10: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    16: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"],
+  }
+  return chars[base] || []
+}
 
-    // Convertir parte decimal a decimal
-    let decimalDecimal = 0
-    if (decimalPart) {
-      for (let i = 0; i < decimalPart.length; i++) {
-        const digit = decimalPart.charCodeAt(i) - (decimalPart[i] >= "A" ? 55 : 48)
-        decimalDecimal += digit / Math.pow(inBase, i + 1)
-      }
-    }
+function convertToDecimal(number, base) {
+  const [integerPart, decimalPart] = number.split(".")
 
-    // Convertir a la base de salida
-    const integerResult = this.convertIntegerToBase(decimalInteger, outBase)
-    const decimalResult = this.convertDecimalToBase(decimalDecimal, outBase, precision * 2)
+  // Convertir parte entera
+  let decimalInteger = 0
+  for (let i = 0; i < integerPart.length; i++) {
+    const digit = Number.parseInt(integerPart[i], base)
+    decimalInteger = decimalInteger * base + digit
+  }
 
-    // Resultados sin precisión
-    const noNormalized = integerResult + (decimalResult ? "." + decimalResult : "")
-    const normalized = this.normalizeFloatingPoint(noNormalized, outBase)
-
-    // Resultados con precisión (corte)
-    const decimalResultCut = this.convertDecimalToBase(decimalDecimal, outBase, precision)
-    const cutNoNormalized = integerResult + (decimalResultCut ? "." + decimalResultCut : "")
-    const cutNormalized = this.normalizeFloatingPoint(cutNoNormalized, outBase)
-
-    // Resultados con precisión (redondeo simétrico)
-    const decimalResultRounded = this.roundSymmetric(decimalDecimal, outBase, precision)
-    const roundNoNormalized = integerResult + (decimalResultRounded ? "." + decimalResultRounded : "")
-    const roundNormalized = this.normalizeFloatingPoint(roundNoNormalized, outBase)
-
-    return {
-      noNormalized,
-      normalized,
-      cutNoNormalized,
-      cutNormalized,
-      roundNoNormalized,
-      roundNormalized,
+  // Convertir parte decimal
+  let decimalFraction = 0
+  if (decimalPart) {
+    for (let i = 0; i < decimalPart.length; i++) {
+      const digit = Number.parseInt(decimalPart[i], base)
+      decimalFraction += digit / Math.pow(base, i + 1)
     }
   }
 
-  convertIntegerToBase(num, base) {
-    if (num === 0) return "0"
-    let result = ""
-    while (num > 0) {
-      const digit = num % base
-      result = (digit < 10 ? digit : String.fromCharCode(55 + digit)) + result
-      num = Math.floor(num / base)
-    }
-    return result
+  return decimalInteger + decimalFraction
+}
+
+function convertFromDecimal(decimalValue, base, precision) {
+  // Separar parte entera y decimal
+  const integerPart = Math.floor(decimalValue)
+  const fractionalPart = decimalValue - integerPart
+
+  // Convertir parte entera
+  let integerConverted = convertIntegerToBase(integerPart, base)
+  if (integerConverted === "") {
+    integerConverted = "0"
   }
 
-  convertDecimalToBase(num, base, maxDigits) {
-    if (num === 0) return ""
-    let result = ""
-    let count = 0
-    while (num > 0 && count < maxDigits) {
-      num *= base
-      const digit = Math.floor(num)
-      result += digit < 10 ? digit : String.fromCharCode(55 + digit)
-      num -= digit
-      count++
-    }
-    return result
-  }
+  // Convertir parte decimal con todos los dígitos
+  const allFractionalDigits = convertFractionalToBase(fractionalPart, base, precision * 2)
 
-  roundSymmetric(num, base, precision) {
-    const result = this.convertDecimalToBase(num, base, precision + 1)
-    if (result.length <= precision) return result
+  // Convertir parte decimal con precisión (por corte)
+  const cutFractionalDigits = allFractionalDigits.substring(0, precision)
 
-    const truncated = result.substring(0, precision)
-    const nextDigit = Number.parseInt(result[precision], base)
-    const halfBase = base / 2
+  // Convertir parte decimal con precisión (por redondeo simétrico)
+  const roundedFractionalDigits = roundSymmetric(allFractionalDigits, precision, base)
 
-    if (nextDigit >= halfBase) {
-      return this.incrementBase(truncated, base)
-    }
-    return truncated
-  }
-
-  incrementBase(str, base) {
-    const result = str.split("")
-    let carry = 1
-
-    for (let i = result.length - 1; i >= 0 && carry; i--) {
-      const digit = Number.parseInt(result[i], base) + carry
-      if (digit >= base) {
-        result[i] = "0"
-        carry = 1
-      } else {
-        result[i] = digit < 10 ? digit.toString() : String.fromCharCode(55 + digit)
-        carry = 0
-      }
-    }
-
-    return carry ? "1" + result.join("") : result.join("")
-  }
-
-  normalizeFloatingPoint(number, base) {
-    const [intPart, decPart] = number.split(".")
-
-    // Si la parte entera es 0 y hay parte decimal
-    if (intPart === "0" && decPart) {
-      // Encontrar el primer dígito no cero
-      let firstNonZero = 0
-      for (let i = 0; i < decPart.length; i++) {
-        if (decPart[i] !== "0") {
-          firstNonZero = i + 1
-          break
-        }
-      }
-      if (firstNonZero > 0) {
-        const exponent = -firstNonZero
-        const mantissa = "0." + decPart.substring(0, firstNonZero) + decPart.substring(firstNonZero)
-        return `${mantissa} x ${base}^${exponent}`
-      }
-    }
-
-    // Si hay parte entera
-    if (intPart !== "0") {
-      const exponent = intPart.length - 1
-      const mantissa = intPart[0] + (decPart ? "." + decPart : "")
-      return `${mantissa} x ${base}^${exponent}`
-    }
-
-    return number
-  }
-
-  displayResults(results) {
-    document.getElementById("result-no-precision-no-norm").textContent = results.noNormalized
-    document.getElementById("result-no-precision-norm").textContent = results.normalized
-    document.getElementById("result-cut-no-norm").textContent = results.cutNoNormalized
-    document.getElementById("result-cut-norm").textContent = results.cutNormalized
-    document.getElementById("result-round-no-norm").textContent = results.roundNoNormalized
-    document.getElementById("result-round-norm").textContent = results.roundNormalized
+  return {
+    integerPart: integerConverted,
+    allFractional: allFractionalDigits,
+    cutFractional: cutFractionalDigits,
+    roundedFractional: roundedFractionalDigits,
   }
 }
 
-// Instancia global del conversor
-const conversor = new ConversorBases()
+function convertIntegerToBase(num, base) {
+  if (num === 0) return "0"
+
+  let result = ""
+  while (num > 0) {
+    const remainder = num % base
+    result = remainder.toString(base) + result
+    num = Math.floor(num / base)
+  }
+  return result
+}
+
+function convertFractionalToBase(fraction, base, maxDigits) {
+  let result = ""
+  let count = 0
+
+  while (fraction > 0 && count < maxDigits) {
+    fraction *= base
+    const digit = Math.floor(fraction)
+    result += digit.toString(base)
+    fraction -= digit
+    count++
+  }
+
+  return result
+}
+
+function roundSymmetric(digits, precision, base) {
+  if (digits.length <= precision) {
+    return digits
+  }
+
+  // Obtener los dígitos hasta la precisión
+  let result = digits.substring(0, precision)
+  const nextDigit = Number.parseInt(digits[precision], base)
+  const baseHalf = Math.floor(base / 2)
+
+  // Si el siguiente dígito es >= base/2, redondear hacia arriba
+  if (nextDigit >= baseHalf) {
+    result = incrementFractional(result, base)
+  }
+
+  return result
+}
+
+function incrementFractional(digits, base) {
+  const arr = digits.split("")
+  let carry = 1
+
+  for (let i = arr.length - 1; i >= 0 && carry > 0; i--) {
+    const digit = Number.parseInt(arr[i], base) + carry
+    if (digit >= base) {
+      arr[i] = "0"
+      carry = 1
+    } else {
+      arr[i] = digit.toString(base)
+      carry = 0
+    }
+  }
+
+  if (carry > 0) {
+    arr.unshift("1")
+  }
+
+  return arr.join("")
+}
+
+function normalizeFloatingPoint(integerPart, fractionalPart, base) {
+  // Punto flotante normalizado: 0.xxx × base^n donde 0 < xxx < 1
+  // Esto significa que el primer dígito después del punto debe ser diferente de 0
+
+  if (integerPart === "0" && (!fractionalPart || fractionalPart === "")) {
+    return { mantissa: "0", exponent: 0 }
+  }
+
+  let mantissa = ""
+  let exponent = 0
+
+  if (integerPart !== "0") {
+    // Si hay parte entera, normalizar moviendo el punto
+    const intLen = integerPart.length
+    mantissa = integerPart[0] + "." + integerPart.substring(1) + fractionalPart
+    exponent = intLen
+  } else {
+    // Si no hay parte entera, buscar el primer dígito diferente de 0 en la parte decimal
+    let firstNonZeroIndex = -1
+    for (let i = 0; i < fractionalPart.length; i++) {
+      if (fractionalPart[i] !== "0") {
+        firstNonZeroIndex = i
+        break
+      }
+    }
+
+    if (firstNonZeroIndex === -1) {
+      // Todos los dígitos son 0
+      return { mantissa: "0", exponent: 0 }
+    }
+
+    mantissa = fractionalPart[firstNonZeroIndex] + "." + fractionalPart.substring(firstNonZeroIndex + 1)
+    exponent = -(firstNonZeroIndex + 1)
+  }
+
+  return { mantissa, exponent }
+}
+
+function displayResults(inputNumber, inputBase, outputBase, precision, result) {
+  // Mostrar información de entrada
+  document.getElementById("info-input-number").textContent = inputNumber
+  document.getElementById("info-input-base").textContent = `Base ${inputBase}`
+  document.getElementById("info-output-base").textContent = `Base ${outputBase}`
+  document.getElementById("info-precision").textContent = precision
+
+  // Resultados con todos los dígitos
+  const allUnnormalized = `${result.integerPart}.${result.allFractional} × ${outputBase}^0`
+  const allNormalized = normalizeFloatingPoint(result.integerPart, result.allFractional, outputBase)
+  const allNormalizedStr = `0.${allNormalized.mantissa.split(".")[1]} × ${outputBase}^${allNormalized.exponent}`
+
+  document.getElementById("result-all-unnormalized").textContent = allUnnormalized
+  document.getElementById("result-all-normalized").textContent = allNormalizedStr
+
+  // Resultados con precisión - Por corte
+  const cutUnnormalized = `${result.integerPart}.${result.cutFractional} × ${outputBase}^0`
+  const cutNormalized = normalizeFloatingPoint(result.integerPart, result.cutFractional, outputBase)
+  const cutNormalizedStr = `0.${cutNormalized.mantissa.split(".")[1]} × ${outputBase}^${cutNormalized.exponent}`
+
+  document.getElementById("result-cut-unnormalized").textContent = cutUnnormalized
+  document.getElementById("result-cut-normalized").textContent = cutNormalizedStr
+
+  // Resultados con precisión - Por redondeo simétrico
+  const roundUnnormalized = `${result.integerPart}.${result.roundedFractional} × ${outputBase}^0`
+  const roundNormalized = normalizeFloatingPoint(result.integerPart, result.roundedFractional, outputBase)
+  const roundNormalizedStr = `0.${roundNormalized.mantissa.split(".")[1]} × ${outputBase}^${roundNormalized.exponent}`
+
+  document.getElementById("result-round-unnormalized").textContent = roundUnnormalized
+  document.getElementById("result-round-normalized").textContent = roundNormalizedStr
+
+  // Mostrar sección de resultados
+  document.getElementById("results-section").style.display = "block"
+}
+
+function showError(message) {
+  document.getElementById("error-message").textContent = message
+  document.getElementById("error-section").style.display = "block"
+  document.getElementById("results-section").style.display = "none"
+}
+
+function hideError() {
+  document.getElementById("error-section").style.display = "none"
+}

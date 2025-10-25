@@ -48,10 +48,18 @@ body {
   font-size: 20px;
 }
 
+/* Hacer el logo-text clickeable y estilizarlo como enlace -->
 .logo-text {
   font-size: 18px;
   font-weight: 600;
   color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.logo-text:hover {
+  color: #5b7cfa;
 }
 
 /* Menu List */
@@ -161,6 +169,296 @@ body {
 .content-header p {
   font-size: 16px;
   color: #909090;
+}
+
+/* Agregar estilos para la página de inicio -->
+.home-content {
+  margin-top: 40px;
+}
+
+.info-section {
+  margin-bottom: 50px;
+}
+
+.info-section h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.elements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.element-card {
+  background-color: #252525;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.element-card:hover {
+  border-color: #5b7cfa;
+  background-color: #2a2a2a;
+  transform: translateY(-5px);
+}
+
+.element-card i {
+  font-size: 32px;
+  color: #5b7cfa;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.element-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.element-card p {
+  font-size: 13px;
+  color: #909090;
+  font-family: "Courier New", monospace;
+}
+
+.examples-section {
+  background-color: #252525;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 30px;
+}
+
+.examples-section h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.examples-subtitle {
+  color: #909090;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.examples-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.example-item {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.example-item:hover {
+  border-color: #5b7cfa;
+  background-color: #2a2a2a;
+}
+
+.example-item code {
+  color: #5b7cfa;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  flex: 1;
+}
+
+.example-item i {
+  color: #909090;
+  margin-left: 10px;
+  transition: color 0.3s ease;
+}
+
+.example-item:hover i {
+  color: #5b7cfa;
+}
+
+/* Agregar estilos para el botón flotante y modal de ayuda -->
+/* Botón Flotante */
+.floating-help-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5b7cfa 0%, #748ffc 100%);
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(91, 124, 250, 0.4);
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.floating-help-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(91, 124, 250, 0.6);
+}
+
+.floating-help-btn:active {
+  transform: scale(0.95);
+}
+
+/* Modal de Ayuda */
+.help-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease;
+}
+
+.help-modal.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.help-modal-content {
+  background-color: #252525;
+  border: 1px solid #3a3a3a;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.help-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px;
+  border-bottom: 1px solid #3a3a3a;
+  position: sticky;
+  top: 0;
+  background-color: #252525;
+}
+
+.help-modal-header h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.help-modal-close {
+  background: none;
+  border: none;
+  color: #909090;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.help-modal-close:hover {
+  color: #ffffff;
+}
+
+.help-modal-body {
+  padding: 25px;
+}
+
+.help-section {
+  margin-bottom: 25px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.help-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.help-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #5b7cfa;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.help-section p {
+  color: #b0b0b0;
+  font-size: 14px;
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.help-section p strong {
+  color: #ffffff;
+  font-family: "Courier New", monospace;
+}
+
+.help-examples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.help-example-item {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.help-example-item:hover {
+  border-color: #5b7cfa;
+  background-color: #2a2a2a;
+}
+
+.help-example-item code {
+  color: #5b7cfa;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  flex: 1;
+}
+
+.help-example-item i {
+  color: #909090;
+  margin-left: 8px;
+  transition: color 0.3s ease;
+}
+
+.help-example-item:hover i {
+  color: #5b7cfa;
 }
 
 /* Estilos para el convertidor de bases */
@@ -386,5 +684,26 @@ body {
 
   .converter-container {
     padding: 20px;
+  }
+
+  .floating-help-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .help-modal-content {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .elements-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .examples-list {
+    grid-template-columns: 1fr;
   }
 }

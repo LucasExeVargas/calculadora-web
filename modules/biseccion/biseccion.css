@@ -1,38 +1,25 @@
-/* Estilos específicos para el módulo de bisección */
-#iterations-table {
+/* Estilos específicos para el módulo de Bisección */
+#iterations-table-bis {
   font-family: "Courier New", monospace;
   font-size: 13px;
 }
 
-#iterations-table tbody tr {
+#iterations-table-bis tbody tr {
   border-bottom: 1px solid #2a2a2a;
 }
 
-#iterations-table tbody tr:hover {
+#iterations-table-bis tbody tr:hover {
   background-color: #1a1a1a;
 }
 
-#iterations-table tbody td {
+#iterations-table-bis tbody td {
   padding: 10px;
   text-align: center;
   color: #b0b0b0;
   border: 1px solid #3a3a3a;
 }
 
-#iterations-table tbody tr:last-child td {
+#iterations-table-bis tbody tr:last-child td {
   color: #5b7cfa;
   font-weight: 600;
-}
-
-.text-muted {
-  color: #909090;
-  font-size: 12px;
-  display: block;
-  margin-top: 5px;
-}
-
-canvas {
-  background-color: #0d0d0d;
-  border-radius: 8px;
-  padding: 10px;
 }

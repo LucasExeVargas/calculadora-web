@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Panel de Control</title>
+    <title>Calculadora - Panel de Control</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -24,9 +24,10 @@
             <div class="sidebar-header">
                 <div class="logo-container">
                     <div class="logo-icon">
-                        <i class="fas fa-plus"></i>
+                        <i class="fas fa-calculator"></i>
                     </div>
-                    <span class="logo-text">Dashboard</span>
+                    <!-- Cambiar "Dashboard" a "Inicio" y hacerlo clickeable -->
+                    <a href="#" class="logo-text" id="home-link">Inicio</a>
                 </div>
             </div>
 
@@ -108,9 +109,95 @@
         <main class="main-content">
             <!-- Contenedor de contenido dinámico -->
             <div id="content-container">
+                <!-- Cambiar título a "Calculadora" y agregar descripción con ejemplos -->
                 <div class="content-header">
-                    <h1>Bienvenido al Panel</h1>
-                    <p>Selecciona una opción del menú lateral para continuar.</p>
+                    <h1>Calculadora</h1>
+                    <p>Suite de herramientas matemáticas para análisis numérico</p>
+                </div>
+
+                <div class="home-content">
+                    <div class="info-section">
+                        <h2>Tipos de Elementos Matemáticos</h2>
+                        <div class="elements-grid">
+                            <div class="element-card">
+                                <i class="fas fa-square-root-alt"></i>
+                                <h3>Raíces</h3>
+                                <p>sqrt(x), cbrt(x)</p>
+                            </div>
+                            <div class="element-card">
+                                <i class="fas fa-superscript"></i>
+                                <h3>Potencias</h3>
+                                <p>x^2, x^3, pow(x,n)</p>
+                            </div>
+                            <div class="element-card">
+                                <i class="fas fa-log"></i>
+                                <h3>Logaritmos</h3>
+                                <p>log(x), log10(x), ln(x)</p>
+                            </div>
+                            <div class="element-card">
+                                <i class="fas fa-wave-square"></i>
+                                <h3>Trigonometría</h3>
+                                <p>sin(x), cos(x), tan(x)</p>
+                            </div>
+                            <div class="element-card">
+                                <i class="fas fa-e"></i>
+                                <h3>Exponenciales</h3>
+                                <p>e^x, exp(x)</p>
+                            </div>
+                            <div class="element-card">
+                                <i class="fas fa-divide"></i>
+                                <h3>Operaciones</h3>
+                                <p>+, -, *, /, %</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="examples-section">
+                        <h2>Ejemplos de Funciones</h2>
+                        <p class="examples-subtitle">Haz clic en cualquier ejemplo para copiarlo</p>
+                        <div class="examples-list">
+                            <div class="example-item" onclick="copyToClipboard(this)">
+                                <code>e^(-x) - sin(x)</code>
+                                <i class="fas fa-copy"></i>
+                            </div>
+                            <div class="example-item" onclick="copyToClipboard(this)">
+                                <code>x^3 - 2*x - 5</code>
+                                <i class="fas fa-copy"></i>
+                            </div>
+                            <div class="example-item" onclick="copyToClipboard(this)">
+                                <code>cos(x) - x</code>
+                                <i class="fas fa-copy"></i>
+                            </div>
+                            <div class="example-item" onclick="copyToClipboard(this)">
+                                <code>log(x) - 1/x</code>
+                                <i class="fas fa-copy"></i>
+                            </div>
+                            <div class="example-item" onclick="copyToClipboard(this)">
+                                <code>sqrt(x) - 2</code>
+                                <i class="fas fa-copy"></i>
+                            </div>
+                            <div class="example-item" onclick="copyToClipboard(this)">
+                                <code>x^2 - 4*x + 3</code>
+                                <i class="fas fa-copy"></i>
+                            </div>
+                            <div class="example-item" onclick="copyToClipboard(this)">
+                                <code>sin(x) - 0.5</code>
+                                <i class="fas fa-copy"></i>
+                            </div>
+                            <div class="example-item" onclick="copyToClipboard(this)">
+                                <code>tan(x) - x</code>
+                                <i class="fas fa-copy"></i>
+                            </div>
+                            <div class="example-item" onclick="copyToClipboard(this)">
+                                <code>exp(x) - 3*x</code>
+                                <i class="fas fa-copy"></i>
+                            </div>
+                            <div class="example-item" onclick="copyToClipboard(this)">
+                                <code>x^4 - 5*x^2 + 4</code>
+                                <i class="fas fa-copy"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -123,6 +210,107 @@
             <!-- Agregar contenedor para regula-falsi-modificada -->
             <div id="regula-falsi-modificada-page" class="page-content" style="display: none;"></div>
         </main>
+    </div>
+
+    <!-- Agregar botón flotante con modal de ayuda -->
+    <!-- Botón Flotante de Ayuda -->
+    <button class="floating-help-btn" id="help-btn" title="Ayuda">
+        <i class="fas fa-question"></i>
+    </button>
+
+    <!-- Modal de Ayuda -->
+    <div class="help-modal" id="help-modal">
+        <div class="help-modal-content">
+            <div class="help-modal-header">
+                <h2>Herramientas Matemáticas</h2>
+                <button class="help-modal-close" id="close-help-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="help-modal-body">
+                <div class="help-section">
+                    <h3><i class="fas fa-square-root-alt"></i> Raíces</h3>
+                    <p><strong>sqrt(x)</strong> - Raíz cuadrada</p>
+                    <p><strong>cbrt(x)</strong> - Raíz cúbica</p>
+                </div>
+
+                <div class="help-section">
+                    <h3><i class="fas fa-superscript"></i> Potencias</h3>
+                    <p><strong>x^2, x^3</strong> - Potencias</p>
+                    <p><strong>pow(x, n)</strong> - Potencia general</p>
+                </div>
+
+                <div class="help-section">
+                    <h3><i class="fas fa-log"></i> Logaritmos</h3>
+                    <p><strong>log(x)</strong> - Logaritmo base 10</p>
+                    <p><strong>log10(x)</strong> - Logaritmo base 10</p>
+                    <p><strong>ln(x)</strong> - Logaritmo natural</p>
+                </div>
+
+                <div class="help-section">
+                    <h3><i class="fas fa-wave-square"></i> Trigonometría</h3>
+                    <p><strong>sin(x), cos(x), tan(x)</strong> - Funciones trigonométricas</p>
+                    <p><strong>asin(x), acos(x), atan(x)</strong> - Funciones inversas</p>
+                </div>
+
+                <div class="help-section">
+                    <h3><i class="fas fa-e"></i> Exponenciales</h3>
+                    <p><strong>e^x</strong> - Exponencial natural</p>
+                    <p><strong>exp(x)</strong> - Función exponencial</p>
+                </div>
+
+                <div class="help-section">
+                    <h3><i class="fas fa-divide"></i> Operaciones Básicas</h3>
+                    <p><strong>+, -, *, /, %</strong> - Suma, resta, multiplicación, división, módulo</p>
+                </div>
+
+                <div class="help-section">
+                    <h3>Ejemplos de Funciones</h3>
+                    <div class="help-examples">
+                        <div class="help-example-item" onclick="copyToClipboard(this)">
+                            <code>e^(-x) - sin(x)</code>
+                            <i class="fas fa-copy"></i>
+                        </div>
+                        <div class="help-example-item" onclick="copyToClipboard(this)">
+                            <code>x^3 - 2*x - 5</code>
+                            <i class="fas fa-copy"></i>
+                        </div>
+                        <div class="help-example-item" onclick="copyToClipboard(this)">
+                            <code>cos(x) - x</code>
+                            <i class="fas fa-copy"></i>
+                        </div>
+                        <div class="help-example-item" onclick="copyToClipboard(this)">
+                            <code>log(x) - 1/x</code>
+                            <i class="fas fa-copy"></i>
+                        </div>
+                        <div class="help-example-item" onclick="copyToClipboard(this)">
+                            <code>sqrt(x) - 2</code>
+                            <i class="fas fa-copy"></i>
+                        </div>
+                        <div class="help-example-item" onclick="copyToClipboard(this)">
+                            <code>x^2 - 4*x + 3</code>
+                            <i class="fas fa-copy"></i>
+                        </div>
+                        <div class="help-example-item" onclick="copyToClipboard(this)">
+                            <code>sin(x) - 0.5</code>
+                            <i class="fas fa-copy"></i>
+                        </div>
+                        <div class="help-example-item" onclick="copyToClipboard(this)">
+                            <code>tan(x) - x</code>
+                            <i class="fas fa-copy"></i>
+                        </div>
+                        <div class="help-example-item" onclick="copyToClipboard(this)">
+                            <code>exp(x) - 3*x</code>
+                            <i class="fas fa-copy"></i>
+                        </div>
+                        <div class="help-example-item" onclick="copyToClipboard(this)">
+                            <code>x^4 - 5*x^2 + 4</code>
+                            <i class="fas fa-copy"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
