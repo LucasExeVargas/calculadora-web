@@ -1,0 +1,390 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+.d-flex {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 240px;
+  background-color: #0d0d0d;
+  border-right: 1px solid #2a2a2a;
+  overflow-y: auto;
+  padding: 20px 0;
+}
+
+.sidebar-header {
+  padding: 0 20px 30px;
+  border-bottom: 1px solid #2a2a2a;
+  margin-bottom: 20px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #5b7cfa 0%, #748ffc 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Menu List */
+.menu-list {
+  list-style: none;
+  padding: 0;
+}
+
+.menu-item {
+  margin: 0;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: #b0b0b0;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.menu-link:hover {
+  color: #ffffff;
+  background-color: #1a1a1a;
+}
+
+.menu-link.active {
+  background-color: #5b7cfa;
+  color: #ffffff;
+  border-radius: 8px;
+  margin: 0 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.menu-link i:first-child {
+  font-size: 18px;
+  width: 20px;
+}
+
+.menu-link span {
+  flex: 1;
+  font-size: 14px;
+}
+
+.chevron {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.menu-link.active .chevron {
+  transform: rotate(180deg);
+}
+
+/* Submenu Styles */
+.submenu {
+  list-style: none;
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background-color: #161616;
+}
+
+.submenu.show {
+  max-height: 500px;
+}
+
+.submenu li {
+  margin: 0;
+}
+
+.submenu-link {
+  display: block;
+  padding: 10px 20px 10px 52px;
+  color: #909090;
+  text-decoration: none;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.submenu-link:hover {
+  color: #ffffff;
+  background-color: #1a1a1a;
+  padding-left: 56px;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  background-color: #1a1a1a;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+.content-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.content-header p {
+  font-size: 16px;
+  color: #909090;
+}
+
+/* Estilos para el convertidor de bases */
+.converter-container {
+  background-color: #252525;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 30px;
+  margin-top: 30px;
+}
+
+.converter-section {
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #e0e0e0;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.form-control,
+.form-select {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  color: #e0e0e0;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #1a1a1a;
+  border-color: #5b7cfa;
+  color: #e0e0e0;
+  box-shadow: 0 0 0 0.2rem rgba(91, 124, 250, 0.25);
+}
+
+.form-control::placeholder {
+  color: #606060;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.input-group-text {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  color: #e0e0e0;
+  padding: 10px 12px;
+  border-radius: 4px;
+  margin-left: -1px;
+}
+
+.error-icon {
+  color: #ff6b6b;
+}
+
+.error-message {
+  color: #ff6b6b;
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.btn-convert {
+  background-color: #5b7cfa;
+  border: none;
+  color: white;
+  padding: 10px 30px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-convert:hover {
+  background-color: #4c63d2;
+  color: white;
+}
+
+.btn-convert:active {
+  transform: scale(0.98);
+}
+
+/* Resultados */
+.results-box {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.results-box h3 {
+  color: #5b7cfa;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.results-box .subtitle {
+  color: #909090;
+  font-size: 12px;
+  margin-bottom: 15px;
+}
+
+.precision-section {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.precision-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.precision-section h4 {
+  color: #b0b0b0;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.result-item {
+  margin-bottom: 15px;
+}
+
+.result-item label {
+  color: #909090;
+  font-size: 13px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.result-value {
+  background-color: #0d0d0d;
+  border: 1px solid #2a2a2a;
+  border-radius: 4px;
+  padding: 12px;
+  color: #5b7cfa;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  word-break: break-all;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.page-content {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Scrollbar Styles */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #0d0d0d;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+  }
+
+  .logo-text {
+    display: none;
+  }
+
+  .menu-link span {
+    display: none;
+  }
+
+  .menu-link {
+    justify-content: center;
+  }
+
+  .submenu-link {
+    padding-left: 40px;
+  }
+
+  .converter-container {
+    padding: 20px;
+  }
+}

@@ -1,0 +1,123 @@
+<!-- Página del Convertidor de Bases -->
+<div class="content-header">
+    <h1>Convertidor de Bases Numéricas</h1>
+    <p>Convierte números entre diferentes bases (2-16). Los decimales se separan con "punto"</p>
+</div>
+
+<div class="converter-container">
+    <!-- Sección de entrada -->
+    <div class="converter-section">
+        <div class="form-group">
+            <label for="input-number">Introduce tu número</label>
+            <div class="input-group">
+                <input type="text" id="input-number" class="form-control" placeholder="Ej: 1010 o FF o 3.8">
+                <span class="input-group-text error-icon" id="error-icon" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                </span>
+            </div>
+            <small class="error-message" id="error-message" style="display: none;"></small>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="input-base">escrito en base</label>
+                <select id="input-base" class="form-select">
+                    <option value="10" selected>10 (decimal)</option>
+                    <option value="2">2 (binario)</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8 (octal)</option>
+                    <option value="9">9</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16 (hexadecimal)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="output-base">para convertir este número a base</label>
+                <select id="output-base" class="form-select">
+                    <option value="10" selected>10 (decimal)</option>
+                    <option value="2">2 (binario)</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8 (octal)</option>
+                    <option value="9">9</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16 (hexadecimal)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="precision">Precisión de cálculo (decimales):</label>
+                <input type="number" id="precision" class="form-control" value="5" min="1" max="100">
+                <small class="text-muted">Rango: 1 a 100 decimales</small>
+            </div>
+        </div>
+
+        <button id="convert-btn" class="btn btn-convert">Pulsa</button>
+    </div>
+
+    <!-- Sección de resultados -->
+    <div id="results-section" style="display: none;">
+        <!-- Resultados sin decimales de precisión -->
+        <div class="results-box">
+            <h3>NÚMERO CONVERTIDO CON TODOS SUS DÍGITOS</h3>
+            <p class="subtitle">(sin decimales de precisión)</p>
+            <div class="result-item">
+                <label>En Punto Flotante sin normalizar:</label>
+                <div class="result-value" id="result-no-precision-no-norm"></div>
+            </div>
+            <div class="result-item">
+                <label>En Punto Flotante normalizado:</label>
+                <div class="result-value" id="result-no-precision-norm"></div>
+            </div>
+        </div>
+
+        <!-- Resultados con decimales de precisión -->
+        <div class="results-box">
+            <h3>NÚMERO CONVERTIDO CON DECIMALES DE PRECISIÓN</h3>
+            
+            <div class="precision-section">
+                <h4>POR CORTE</h4>
+                <div class="result-item">
+                    <label>En Punto Flotante sin normalizar:</label>
+                    <div class="result-value" id="result-cut-no-norm"></div>
+                </div>
+                <div class="result-item">
+                    <label>En Punto Flotante normalizado:</label>
+                    <div class="result-value" id="result-cut-norm"></div>
+                </div>
+            </div>
+
+            <div class="precision-section">
+                <h4>POR REDONDEO SIMÉTRICO</h4>
+                <div class="result-item">
+                    <label>En Punto Flotante sin normalizar:</label>
+                    <div class="result-value" id="result-round-no-norm"></div>
+                </div>
+                <div class="result-item">
+                    <label>En Punto Flotante normalizado:</label>
+                    <div class="result-value" id="result-round-norm"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

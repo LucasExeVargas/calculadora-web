@@ -1,0 +1,106 @@
+<!-- Página del Método de Bisección -->
+<div class="content-header">
+    <h1>Método de Bisección</h1>
+    <p>Encuentra raíces de funciones mediante el método de bisección</p>
+</div>
+
+<div class="converter-container">
+    <!-- Sección de entrada de función -->
+    <div class="converter-section">
+        <div class="form-group">
+            <label for="function-input">Introduce la función F(x)</label>
+            <input type="text" id="function-input" class="form-control" placeholder="Ej: x^2 - 4 o sin(x) - 0.5">
+            <small class="text-muted">
+                Usa: +, -, *, /, ^ (potencia), sqrt(), sin(), cos(), tan(), exp(), log(), pi, e
+            </small>
+        </div>
+
+        <button id="graph-btn" class="btn btn-convert">Graficar</button>
+    </div>
+
+    <!-- Sección del gráfico -->
+    <div id="graph-section" style="display: none; margin-top: 30px;">
+        <div class="results-box">
+            <h3>GRÁFICO DE LA FUNCIÓN</h3>
+            <canvas id="function-chart" style="max-height: 400px;"></canvas>
+            <div style="margin-top:10px; display:flex; gap:8px;">
+                <button id="reset-zoom-func" class="btn btn-convert" style="background:#4a4a4a;">Reset zoom</button>
+            </div>
+        </div>
+
+        <!-- Parámetros del método -->
+        <div class="converter-section" style="margin-top: 30px;">
+            <h3 style="color: #5b7cfa; margin-bottom: 20px;">Parámetros del Método</h3>
+            
+            <div class="form-row" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label for="param-a">Valor de a (inicio del intervalo)</label>
+                    <input type="number" id="param-a" class="form-control" step="0.1" placeholder="Ej: 0">
+                </div>
+                <div class="form-group">
+                    <label for="param-b">Valor de b (fin del intervalo)</label>
+                    <input type="number" id="param-b" class="form-control" step="0.1" placeholder="Ej: 2">
+                </div>
+            </div>
+
+            <div class="form-row" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label for="param-error">Error aceptable (ε)</label>
+                    <input type="number" id="param-error" class="form-control" step="0.0001" value="0.001" placeholder="Ej: 0.001">
+                </div>
+                <div class="form-group">
+                    <label for="param-max-iter">Máximo de iteraciones</label>
+                    <input type="number" id="param-max-iter" class="form-control" value="100" min="1" placeholder="Ej: 100">
+                </div>
+            </div>
+
+            <button id="method-btn" class="btn btn-convert">Usar método</button>
+        </div>
+    </div>
+
+    <!-- Sección de resultados -->
+    <div id="results-section" style="display: none; margin-top: 30px;">
+        <div class="results-box">
+            <h3>GRÁFICO CON RAÍZ APROXIMADA</h3>
+            <canvas id="result-chart" style="max-height: 400px;"></canvas>
+            <div style="margin-top:10px; display:flex; gap:8px;">
+                <button id="reset-zoom-result" class="btn btn-convert" style="background:#4a4a4a;">Reset zoom</button>
+            </div>
+        </div>
+
+        <div class="results-box" style="margin-top: 20px;">
+            <h3>TABLA DE ITERACIONES</h3>
+            <div style="overflow-x: auto;">
+                <table id="iterations-table" style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                    <thead>
+                        <tr style="background-color: #0d0d0d; border-bottom: 2px solid #5b7cfa;">
+                            <th style="padding: 12px; text-align: center; color: #e0e0e0; border: 1px solid #3a3a3a;">i</th>
+                            <th style="padding: 12px; text-align: center; color: #e0e0e0; border: 1px solid #3a3a3a;">a<sub>i</sub></th>
+                            <th style="padding: 12px; text-align: center; color: #e0e0e0; border: 1px solid #3a3a3a;">b<sub>i</sub></th>
+                            <th style="padding: 12px; text-align: center; color: #e0e0e0; border: 1px solid #3a3a3a;">c<sub>i</sub></th>
+                            <th style="padding: 12px; text-align: center; color: #e0e0e0; border: 1px solid #3a3a3a;">f(c<sub>i</sub>)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="iterations-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="results-box" style="margin-top: 20px;">
+            <h3>RESULTADO FINAL</h3>
+            <div class="result-item">
+                <label>Raíz aproximada:</label>
+                <div class="result-value" id="final-root"></div>
+            </div>
+            <div class="result-item">
+                <label>Iteraciones realizadas:</label>
+                <div class="result-value" id="final-iterations"></div>
+            </div>
+            <div class="result-item">
+                <label>Error final:</label>
+                <div class="result-value" id="final-error"></div>
+            </div>
+        </div>
+    </div>
+</div>

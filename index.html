@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Panel de Control</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Importar CSS del convertidor -->
+    <link rel="stylesheet" href="modules/convertidor/convertidor.css">
+    <!-- Importar CSS del módulo bisección -->
+    <link rel="stylesheet" href="modules/biseccion/biseccion.css">
+    <!-- Importar CSS del módulo regula-falsi -->
+    <link rel="stylesheet" href="modules/regula-falsi/regula-falsi.css">
+    <!-- Importar CSS del módulo regula-falsi-modificada -->
+    <link rel="stylesheet" href="modules/regula-falsi-modificada/regula-falsi-modificada.css">
+</head>
+<body>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <!-- Header del Sidebar -->
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <span class="logo-text">Dashboard</span>
+                </div>
+            </div>
+
+            <!-- Menu Items -->
+            <ul class="menu-list">
+                <li class="menu-item">
+                    <a href="#" class="menu-link" data-toggle="tp2">
+                        <i class="fas fa-folder"></i>
+                        <span>TP2</span>
+                        <i class="fas fa-chevron-down chevron"></i>
+                    </a>
+                    <ul class="submenu" id="tp2-submenu">
+                        <!-- Reemplazar opciones genéricas con "Convertidor" -->
+                        <li><a href="#" class="submenu-link" data-page="convertidor">Convertidor</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-item">
+                    <a href="#" class="menu-link" data-toggle="tp3">
+                        <i class="fas fa-folder"></i>
+                        <span>TP3</span>
+                        <i class="fas fa-chevron-down chevron"></i>
+                    </a>
+                    <ul class="submenu" id="tp3-submenu">
+                        <!-- Agregar data-page="biseccion" al enlace de Bisección -->
+                        <li><a href="#" class="submenu-link" data-page="biseccion">Biseccion</a></li>
+                        <!-- Agregar data-page="regula-falsi" -->
+                        <li><a href="#" class="submenu-link" data-page="regula-falsi">Regula Falsi</a></li>
+                        <!-- Agregar data-page="regula-falsi-modificada" -->
+                        <li><a href="#" class="submenu-link" data-page="regula-falsi-modificada">Regula Falsi Modificada</a></li>
+                        <li><a href="#" class="submenu-link">Secante</a></li>
+                        <li><a href="#" class="submenu-link">Newton</a></li>
+                        <li><a href="#" class="submenu-link">Punto Fijo</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-item">
+                    <a href="#" class="menu-link" data-toggle="tp4">
+                        <i class="fas fa-folder"></i>
+                        <span>TP4</span>
+                        <i class="fas fa-chevron-down chevron"></i>
+                    </a>
+                    <ul class="submenu" id="tp4-submenu">
+                        <li><a href="#" class="submenu-link">Opción 1</a></li>
+                        <li><a href="#" class="submenu-link">Opción 2</a></li>
+                        <li><a href="#" class="submenu-link">Opción 3</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-item">
+                    <a href="#" class="menu-link" data-toggle="tp5">
+                        <i class="fas fa-folder"></i>
+                        <span>TP5</span>
+                        <i class="fas fa-chevron-down chevron"></i>
+                    </a>
+                    <ul class="submenu" id="tp5-submenu">
+                        <li><a href="#" class="submenu-link">Opción 1</a></li>
+                        <li><a href="#" class="submenu-link">Opción 2</a></li>
+                        <li><a href="#" class="submenu-link">Opción 3</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-item">
+                    <a href="#" class="menu-link" data-toggle="tp6">
+                        <i class="fas fa-folder"></i>
+                        <span>TP6</span>
+                        <i class="fas fa-chevron-down chevron"></i>
+                    </a>
+                    <ul class="submenu" id="tp6-submenu">
+                        <li><a href="#" class="submenu-link">Opción 1</a></li>
+                        <li><a href="#" class="submenu-link">Opción 2</a></li>
+                        <li><a href="#" class="submenu-link">Opción 3</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Contenedor de contenido dinámico -->
+            <div id="content-container">
+                <div class="content-header">
+                    <h1>Bienvenido al Panel</h1>
+                    <p>Selecciona una opción del menú lateral para continuar.</p>
+                </div>
+            </div>
+
+            <!-- Contenedor para el convertidor (se cargará dinámicamente) -->
+            <div id="convertidor-page" class="page-content" style="display: none;"></div>
+            <!-- Agregar contenedor para bisección -->
+            <div id="biseccion-page" class="page-content" style="display: none;"></div>
+            <!-- Agregar contenedor para regula-falsi -->
+            <div id="regula-falsi-page" class="page-content" style="display: none;"></div>
+            <!-- Agregar contenedor para regula-falsi-modificada -->
+            <div id="regula-falsi-modificada-page" class="page-content" style="display: none;"></div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Agregar librerías math.js y Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+    <script src="script.js"></script>
+    <!-- Importar JS del convertidor -->
+    <script src="modules/convertidor/convertidor.js"></script>
+    <!-- Importar JS del módulo bisección -->
+    <script src="modules/biseccion/biseccion.js"></script>
+    <!-- Importar JS del módulo regula-falsi -->
+    <script src="modules/regula-falsi/regula-falsi.js"></script>
+    <!-- Importar JS del módulo regula-falsi-modificada -->
+    <script src="modules/regula-falsi-modificada/regula-falsi-modificada.js"></script>
+</body>
+</html>
