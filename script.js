@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const helpBtn = document.getElementById("help-btn")
   const closeHelpBtn = document.getElementById("close-help-btn")
   const helpModal = document.getElementById("help-modal")
+  const compararLink = document.getElementById("comparar-link") // Added for comparar link
 
   if (homeLink) {
     homeLink.addEventListener("click", (e) => {
@@ -79,6 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
         loadSecante()
       } else if (page === "punto-fijo") {
         loadPuntoFijo()
+      } else if (page === "comparar") {
+        loadComparar()
       }
     })
   })
@@ -99,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("newton-page").style.display = "none"
     document.getElementById("secante-page").style.display = "none"
     document.getElementById("punto-fijo-page").style.display = "none"
+    document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
 
     // Remover clase active de todos los menu-links
     menuLinks.forEach((link) => {
@@ -130,6 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("newton-page").style.display = "none"
       document.getElementById("secante-page").style.display = "none"
       document.getElementById("punto-fijo-page").style.display = "none"
+      document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
       cleanContainer.style.display = "block"
 
       if (typeof window.initializeConversor === "function") {
@@ -163,6 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("newton-page").style.display = "none"
       document.getElementById("secante-page").style.display = "none"
       document.getElementById("punto-fijo-page").style.display = "none"
+      document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
       cleanContainer.style.display = "block"
       console.log("[v0] Página de bisección mostrada")
 
@@ -197,6 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("newton-page").style.display = "none"
       document.getElementById("secante-page").style.display = "none"
       document.getElementById("punto-fijo-page").style.display = "none"
+      document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
       cleanContainer.style.display = "block"
 
       if (typeof window.initializeRegulaFalsi === "function") {
@@ -228,6 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("newton-page").style.display = "none"
       document.getElementById("secante-page").style.display = "none"
       document.getElementById("punto-fijo-page").style.display = "none"
+      document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
       cleanContainer.style.display = "block"
 
       if (typeof window.initializeRegulaFalsiModificada === "function") {
@@ -261,6 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("regula-falsi-modificada-page").style.display = "none"
       document.getElementById("secante-page").style.display = "none"
       document.getElementById("punto-fijo-page").style.display = "none"
+      document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
       cleanContainer.style.display = "block"
       console.log("[v0] Página de Newton mostrada")
 
@@ -297,6 +306,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("regula-falsi-modificada-page").style.display = "none"
       document.getElementById("newton-page").style.display = "none"
       document.getElementById("punto-fijo-page").style.display = "none"
+      document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
       cleanContainer.style.display = "block"
       console.log("[v0] Página de Secante mostrada")
 
@@ -333,6 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("regula-falsi-modificada-page").style.display = "none"
       document.getElementById("newton-page").style.display = "none"
       document.getElementById("secante-page").style.display = "none"
+      document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
       cleanContainer.style.display = "block"
       console.log("[v0] Página de Punto Fijo mostrada")
 
@@ -346,6 +357,43 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.error("[v0] Error cargando Punto Fijo:", error)
       pageContainer.innerHTML = "<p>Error al cargar el módulo de Punto Fijo</p>"
+    }
+  }
+
+  async function loadComparar() {
+    const pageContainer = document.getElementById("comparar-page")
+    console.log("[v0] Cargando página de Comparar...")
+
+    try {
+      const cleanContainer = cleanupContainer(pageContainer)
+
+      const response = await fetch("modules/comparar/comparar.html")
+      const html = await response.text()
+      cleanContainer.innerHTML = html
+      console.log("[v0] HTML de Comparar cargado")
+
+      // Mostrar la página
+      document.getElementById("content-container").style.display = "none"
+      document.getElementById("convertidor-page").style.display = "none"
+      document.getElementById("biseccion-page").style.display = "none"
+      document.getElementById("regula-falsi-page").style.display = "none"
+      document.getElementById("regula-falsi-modificada-page").style.display = "none"
+      document.getElementById("newton-page").style.display = "none"
+      document.getElementById("secante-page").style.display = "none"
+      document.getElementById("punto-fijo-page").style.display = "none"
+      cleanContainer.style.display = "block"
+      console.log("[v0] Página de Comparar mostrada")
+
+      // Verificar que la función esté disponible
+      if (typeof window.initializeComparar === "function") {
+        console.log("[v0] Llamando a initializeComparar...")
+        window.initializeComparar()
+      } else {
+        console.error("[v0] ERROR: window.initializeComparar no es una función")
+      }
+    } catch (error) {
+      console.error("[v0] Error cargando Comparar:", error)
+      pageContainer.innerHTML = "<p>Error al cargar el módulo de Comparar</p>"
     }
   }
 

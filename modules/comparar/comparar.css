@@ -1,0 +1,83 @@
+/* Estilos específicos para el módulo de Comparación */
+
+#comparar-page {
+  min-height: 100vh;
+  background: #0f0f0f;
+  color: #e0e0e0;
+  padding: 40px 20px;
+}
+
+#comparar-page .content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+#comparar-page .page-title {
+  font-size: 42px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+#comparar-page .page-description {
+  font-size: 18px;
+  color: #b0b0b0;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+#comparar-page select {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#comparar-page select:hover {
+  border-color: #5b7cfa;
+}
+
+#comparar-page select:focus {
+  outline: none;
+  border-color: #5b7cfa;
+  box-shadow: 0 0 0 3px rgba(91, 124, 250, 0.1);
+}
+
+#comparar-page input:focus {
+  outline: none;
+  border-color: #5b7cfa;
+  box-shadow: 0 0 0 3px rgba(91, 124, 250, 0.1);
+}
+
+#comparar-page .primary-btn {
+  transition: all 0.3s ease;
+}
+
+#comparar-page .primary-btn:hover {
+  background: #4a6be8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(91, 124, 250, 0.4);
+}
+
+#compare-btn {
+  transition: all 0.3s ease;
+}
+
+#compare-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  #comparar-page .content-wrapper {
+    padding: 20px 10px;
+  }
+
+  #comparar-page .page-title {
+    font-size: 32px;
+  }
+
+  #parameters-section-comparar > div:first-child,
+  #results-section-comparar > div:nth-child(2) {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -1,0 +1,126 @@
+<div class="page-container" id="comparar-page">
+  <div class="content-wrapper">
+    <h1 class="page-title">Comparar Métodos</h1>
+    <p class="page-description">Compara dos métodos numéricos para encontrar raíces de funciones</p>
+
+    <!-- Selección de métodos -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+      <div>
+        <label style="display: block; margin-bottom: 8px; color: #e0e0e0; font-weight: 500;">Método 1</label>
+        <select id="method1-select" style="width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px; color: #e0e0e0; font-size: 16px;">
+          <option value="">Seleccione método</option>
+          <option value="biseccion">Bisección</option>
+          <option value="newton">Newton-Raphson</option>
+          <option value="secante">Secante</option>
+          <option value="punto-fijo">Punto Fijo</option>
+          <option value="regula-falsi">Regula Falsi</option>
+          <option value="regula-falsi-modificada">Regula Falsi Modificada</option>
+        </select>
+      </div>
+      <div>
+        <label style="display: block; margin-bottom: 8px; color: #e0e0e0; font-weight: 500;">Método 2</label>
+        <select id="method2-select" style="width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px; color: #e0e0e0; font-size: 16px;">
+          <option value="">Seleccione método</option>
+          <option value="biseccion">Bisección</option>
+          <option value="newton">Newton-Raphson</option>
+          <option value="secante">Secante</option>
+          <option value="punto-fijo">Punto Fijo</option>
+          <option value="regula-falsi">Regula Falsi</option>
+          <option value="regula-falsi-modificada">Regula Falsi Modificada</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Entrada de función -->
+    <div class="input-section" style="background: #1a1a1a; padding: 30px; border-radius: 12px; margin-bottom: 30px;">
+      <h3 style="color: #e0e0e0; margin-bottom: 20px;">Introduce la función f(x)</h3>
+      <input
+        type="text"
+        id="function-input-comparar"
+        placeholder="Ej: x^2 - 4 o sin(x) - 0.5"
+        style="width: 100%; padding: 15px; background: #2a2a2a; border: 2px solid #3a3a3a; border-radius: 8px; color: #e0e0e0; font-size: 16px; margin-bottom: 20px;"
+      />
+      <button id="graph-btn-comparar" class="primary-btn" style="padding: 12px 30px; background: #5b7cfa; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 600;">
+        Graficar
+      </button>
+    </div>
+
+    <!-- Parámetros de los métodos (se muestran después de graficar) -->
+    <div id="parameters-section-comparar" style="display: none;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+        <!-- Método 1 -->
+        <div id="method1-params" style="background: #1a1a1a; padding: 30px; border-radius: 12px;">
+          <h3 id="method1-title" style="color: #e0e0e0; margin-bottom: 20px;">Método 1</h3>
+          <p id="method1-description" style="color: #b0b0b0; margin-bottom: 20px; font-size: 14px;"></p>
+          <div id="method1-inputs"></div>
+        </div>
+
+        <!-- Método 2 -->
+        <div id="method2-params" style="background: #1a1a1a; padding: 30px; border-radius: 12px;">
+          <h3 id="method2-title" style="color: #e0e0e0; margin-bottom: 20px;">Método 2</h3>
+          <p id="method2-description" style="color: #b0b0b0; margin-bottom: 20px; font-size: 14px;"></p>
+          <div id="method2-inputs"></div>
+        </div>
+      </div>
+
+      <!-- Parámetros compartidos -->
+      <div style="background: #1a1a1a; padding: 30px; border-radius: 12px; margin-bottom: 30px;">
+        <h3 style="color: #5b7cfa; margin-bottom: 20px; font-size: 20px;">Parámetros Compartidos</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div>
+            <label style="display: block; margin-bottom: 8px; color: #e0e0e0;">Error aceptable (ε)</label>
+            <input
+              type="number"
+              id="shared-error"
+              value="0.001"
+              step="0.0001"
+              style="width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px; color: #e0e0e0;"
+            />
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 8px; color: #e0e0e0;">Máximo de iteraciones</label>
+            <input
+              type="number"
+              id="shared-max-iter"
+              value="100"
+              min="1"
+              style="width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px; color: #e0e0e0;"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón comparar -->
+      <div style="text-align: center;">
+        <button id="compare-btn" style="padding: 15px 50px; background: white; color: black; border: 3px solid black; border-radius: 8px; font-size: 18px; cursor: pointer; font-weight: 700;">
+          Comparar métodos
+        </button>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div id="results-section-comparar" style="display: none; margin-top: 40px;">
+      <h2 style="color: #e0e0e0; margin-bottom: 30px; text-align: center;">Resultados de la Comparación</h2>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+        <!-- Resultado Método 1 -->
+        <div id="result1-container" style="background: #1a1a1a; padding: 30px; border-radius: 12px;">
+          <h3 id="result1-title" style="color: #e0e0e0; margin-bottom: 20px;"></h3>
+          <div id="result1-content"></div>
+        </div>
+
+        <!-- Resultado Método 2 -->
+        <div id="result2-container" style="background: #1a1a1a; padding: 30px; border-radius: 12px;">
+          <h3 id="result2-title" style="color: #e0e0e0; margin-bottom: 20px;"></h3>
+          <div id="result2-content"></div>
+        </div>
+      </div>
+
+      <!-- Resumen de comparación -->
+      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 12px; color: white;">
+        <h3 style="margin-bottom: 20px; font-size: 24px; text-align: center;">📊 Resumen de Comparación</h3>
+        <div id="comparison-summary" style="font-size: 18px; line-height: 1.8;"></div>
+      </div>
+    </div>
+  </div>
+</div>
