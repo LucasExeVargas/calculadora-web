@@ -73,6 +73,12 @@ document.addEventListener("DOMContentLoaded", () => {
         loadRegulaFalsi()
       } else if (page === "regula-falsi-modificada") {
         loadRegulaFalsiModificada()
+      } else if (page === "newton") {
+        loadNewton()
+      } else if (page === "secante") {
+        loadSecante()
+      } else if (page === "punto-fijo") {
+        loadPuntoFijo()
       }
     })
   })
@@ -90,6 +96,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("biseccion-page").style.display = "none"
     document.getElementById("regula-falsi-page").style.display = "none"
     document.getElementById("regula-falsi-modificada-page").style.display = "none"
+    document.getElementById("newton-page").style.display = "none"
+    document.getElementById("secante-page").style.display = "none"
+    document.getElementById("punto-fijo-page").style.display = "none"
 
     // Remover clase active de todos los menu-links
     menuLinks.forEach((link) => {
@@ -118,6 +127,9 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("biseccion-page").style.display = "none"
       document.getElementById("regula-falsi-page").style.display = "none"
       document.getElementById("regula-falsi-modificada-page").style.display = "none"
+      document.getElementById("newton-page").style.display = "none"
+      document.getElementById("secante-page").style.display = "none"
+      document.getElementById("punto-fijo-page").style.display = "none"
       cleanContainer.style.display = "block"
 
       if (typeof window.initializeConversor === "function") {
@@ -148,6 +160,9 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("convertidor-page").style.display = "none"
       document.getElementById("regula-falsi-page").style.display = "none"
       document.getElementById("regula-falsi-modificada-page").style.display = "none"
+      document.getElementById("newton-page").style.display = "none"
+      document.getElementById("secante-page").style.display = "none"
+      document.getElementById("punto-fijo-page").style.display = "none"
       cleanContainer.style.display = "block"
       console.log("[v0] Página de bisección mostrada")
 
@@ -179,6 +194,9 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("convertidor-page").style.display = "none"
       document.getElementById("biseccion-page").style.display = "none"
       document.getElementById("regula-falsi-modificada-page").style.display = "none"
+      document.getElementById("newton-page").style.display = "none"
+      document.getElementById("secante-page").style.display = "none"
+      document.getElementById("punto-fijo-page").style.display = "none"
       cleanContainer.style.display = "block"
 
       if (typeof window.initializeRegulaFalsi === "function") {
@@ -207,6 +225,9 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("convertidor-page").style.display = "none"
       document.getElementById("biseccion-page").style.display = "none"
       document.getElementById("regula-falsi-page").style.display = "none"
+      document.getElementById("newton-page").style.display = "none"
+      document.getElementById("secante-page").style.display = "none"
+      document.getElementById("punto-fijo-page").style.display = "none"
       cleanContainer.style.display = "block"
 
       if (typeof window.initializeRegulaFalsiModificada === "function") {
@@ -217,6 +238,114 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.error("[v0] Error cargando Regula Falsi Modificada:", error)
       pageContainer.innerHTML = "<p>Error al cargar el módulo de Regula Falsi Modificada</p>"
+    }
+  }
+
+  async function loadNewton() {
+    const pageContainer = document.getElementById("newton-page")
+    console.log("[v0] Cargando página de Newton...")
+
+    try {
+      const cleanContainer = cleanupContainer(pageContainer)
+
+      const response = await fetch("modules/newton-raphson/newton.html")
+      const html = await response.text()
+      cleanContainer.innerHTML = html
+      console.log("[v0] HTML de Newton cargado")
+
+      // Mostrar la página
+      document.getElementById("content-container").style.display = "none"
+      document.getElementById("convertidor-page").style.display = "none"
+      document.getElementById("biseccion-page").style.display = "none"
+      document.getElementById("regula-falsi-page").style.display = "none"
+      document.getElementById("regula-falsi-modificada-page").style.display = "none"
+      document.getElementById("secante-page").style.display = "none"
+      document.getElementById("punto-fijo-page").style.display = "none"
+      cleanContainer.style.display = "block"
+      console.log("[v0] Página de Newton mostrada")
+
+      // Verificar que la función esté disponible
+      if (typeof window.initializeNewton === "function") {
+        console.log("[v0] Llamando a initializeNewton...")
+        window.initializeNewton()
+      } else {
+        console.error("[v0] ERROR: window.initializeNewton no es una función")
+      }
+    } catch (error) {
+      console.error("[v0] Error cargando Newton:", error)
+      pageContainer.innerHTML = "<p>Error al cargar el módulo de Newton</p>"
+    }
+  }
+
+  async function loadSecante() {
+    const pageContainer = document.getElementById("secante-page")
+    console.log("[v0] Cargando página de Secante...")
+
+    try {
+      const cleanContainer = cleanupContainer(pageContainer)
+
+      const response = await fetch("modules/secante/secante.html")
+      const html = await response.text()
+      cleanContainer.innerHTML = html
+      console.log("[v0] HTML de Secante cargado")
+
+      // Mostrar la página
+      document.getElementById("content-container").style.display = "none"
+      document.getElementById("convertidor-page").style.display = "none"
+      document.getElementById("biseccion-page").style.display = "none"
+      document.getElementById("regula-falsi-page").style.display = "none"
+      document.getElementById("regula-falsi-modificada-page").style.display = "none"
+      document.getElementById("newton-page").style.display = "none"
+      document.getElementById("punto-fijo-page").style.display = "none"
+      cleanContainer.style.display = "block"
+      console.log("[v0] Página de Secante mostrada")
+
+      // Verificar que la función esté disponible
+      if (typeof window.initializeSecante === "function") {
+        console.log("[v0] Llamando a initializeSecante...")
+        window.initializeSecante()
+      } else {
+        console.error("[v0] ERROR: window.initializeSecante no es una función")
+      }
+    } catch (error) {
+      console.error("[v0] Error cargando Secante:", error)
+      pageContainer.innerHTML = "<p>Error al cargar el módulo de Secante</p>"
+    }
+  }
+
+  async function loadPuntoFijo() {
+    const pageContainer = document.getElementById("punto-fijo-page")
+    console.log("[v0] Cargando página de Punto Fijo...")
+
+    try {
+      const cleanContainer = cleanupContainer(pageContainer)
+
+      const response = await fetch("modules/punto-fijo/punto-fijo.html")
+      const html = await response.text()
+      cleanContainer.innerHTML = html
+      console.log("[v0] HTML de Punto Fijo cargado")
+
+      // Mostrar la página
+      document.getElementById("content-container").style.display = "none"
+      document.getElementById("convertidor-page").style.display = "none"
+      document.getElementById("biseccion-page").style.display = "none"
+      document.getElementById("regula-falsi-page").style.display = "none"
+      document.getElementById("regula-falsi-modificada-page").style.display = "none"
+      document.getElementById("newton-page").style.display = "none"
+      document.getElementById("secante-page").style.display = "none"
+      cleanContainer.style.display = "block"
+      console.log("[v0] Página de Punto Fijo mostrada")
+
+      // Verificar que la función esté disponible
+      if (typeof window.initializePuntoFijo === "function") {
+        console.log("[v0] Llamando a initializePuntoFijo...")
+        window.initializePuntoFijo()
+      } else {
+        console.error("[v0] ERROR: window.initializePuntoFijo no es una función")
+      }
+    } catch (error) {
+      console.error("[v0] Error cargando Punto Fijo:", error)
+      pageContainer.innerHTML = "<p>Error al cargar el módulo de Punto Fijo</p>"
     }
   }
 

@@ -1,0 +1,29 @@
+/* Estilos específicos para el módulo de Punto Fijo */
+/* Hereda la mayoría de estilos de los módulos existentes */
+
+#convergence-modal-punto-fijo {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+#convergence-modal-punto-fijo .btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+#convergence-modal-punto-fijo .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}

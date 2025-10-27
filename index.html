@@ -15,6 +15,12 @@
     <link rel="stylesheet" href="modules/regula-falsi/regula-falsi.css">
     <!-- Importar CSS del módulo regula-falsi-modificada -->
     <link rel="stylesheet" href="modules/regula-falsi-modificada/regula-falsi-modificada.css">
+    <!-- Importar CSS del módulo Newton -->
+    <link rel="stylesheet" href="modules/newton-raphson/newton.css">
+    <!-- Importar CSS del módulo secante -->
+    <link rel="stylesheet" href="modules/secante/secante.css">
+    <!-- Added CSS import for punto-fijo module -->
+    <link rel="stylesheet" href="modules/punto-fijo/punto-fijo.css">
 </head>
 <body>
     <div class="d-flex">
@@ -58,9 +64,11 @@
                         <li><a href="#" class="submenu-link" data-page="regula-falsi">Regula Falsi</a></li>
                         <!-- Agregar data-page="regula-falsi-modificada" -->
                         <li><a href="#" class="submenu-link" data-page="regula-falsi-modificada">Regula Falsi Modificada</a></li>
-                        <li><a href="#" class="submenu-link">Secante</a></li>
-                        <li><a href="#" class="submenu-link">Newton</a></li>
-                        <li><a href="#" class="submenu-link">Punto Fijo</a></li>
+                        <li><a href="#" class="submenu-link" data-page="secante">Secante</a></li>
+                        <!-- Agregar opción Newton -->
+                        <li><a href="#" class="submenu-link" data-page="newton">Newton</a></li>
+                        <!-- Added data-page attribute for punto-fijo -->
+                        <li><a href="#" class="submenu-link" data-page="punto-fijo">Punto Fijo</a></li>
                     </ul>
                 </li>
 
@@ -112,12 +120,7 @@
                 <!-- Cambiar título a "Calculadora" y agregar descripción con ejemplos -->
                 <div class="content-header">
                     <h1>Calculadora</h1>
-                        <p>Utilice el menu lateral para navegar entre los distintos metodos</p>
-                        <p>El ingreso tanto de funciones como de parametros para ejecutar cualquier metodo sera por teclado</p>
-                        <p>En la seccion inferior de esta pagina tendra una lista de las herramientas como asi ejemplos de funciones listas para copiar y pegar</p>
-                        <p>De todos modos simepre tendra el icono de interrogacion para consultar estas herramientas y ejemplos sin salir del metodo en el que se encuentre</p>
-                        <p>Suite de herramientas matemáticas para análisis numérico</p>
-                    
+                    <p>Suite de herramientas matemáticas para análisis numérico</p>
                 </div>
 
                 <div class="home-content">
@@ -151,7 +154,7 @@
                             </div>
                             <div class="element-card">
                                 <i class="fas fa-divide"></i>
-                                <h3>Operaciones: Suma, Resta, Multiplicación, División, Módulo</h3>
+                                <h3>Operaciones</h3>
                                 <p>+, -, *, /, %</p>
                             </div>
                         </div>
@@ -214,6 +217,12 @@
             <div id="regula-falsi-page" class="page-content" style="display: none;"></div>
             <!-- Agregar contenedor para regula-falsi-modificada -->
             <div id="regula-falsi-modificada-page" class="page-content" style="display: none;"></div>
+            <!-- Agregar contenedor para Secante -->
+            <div id="secante-page" class="page-content" style="display: none;"></div>
+            <!-- Agregar contenedor para Newton -->
+            <div id="newton-page" class="page-content" style="display: none;"></div>
+            <!-- Added container for punto-fijo page -->
+            <div id="punto-fijo-page" class="page-content" style="display: none;"></div>
         </main>
     </div>
 
@@ -332,5 +341,11 @@
     <script src="modules/regula-falsi/regula-falsi.js"></script>
     <!-- Importar JS del módulo regula-falsi-modificada -->
     <script src="modules/regula-falsi-modificada/regula-falsi-modificada.js"></script>
+    <!-- Importar JS del módulo Newton -->
+    <script src="modules/newton-raphson/newton.js"></script>
+    <!-- Importar JS del módulo secante -->
+    <script src="modules/secante/secante.js"></script>
+    <!-- Added JS import for punto-fijo module -->
+    <script src="modules/punto-fijo/punto-fijo.js"></script>
 </body>
 </html>
