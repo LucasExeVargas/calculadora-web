@@ -1,0 +1,25 @@
+/* Estilos específicos para el módulo de Halley */
+#iterations-table-halley {
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+}
+
+#iterations-table-halley tbody tr {
+  border-bottom: 1px solid #2a2a2a;
+}
+
+#iterations-table-halley tbody tr:hover {
+  background-color: #1a1a1a;
+}
+
+#iterations-table-halley tbody td {
+  padding: 10px;
+  text-align: center;
+  color: #b0b0b0;
+  border: 1px solid #3a3a3a;
+}
+
+#iterations-table-halley tbody tr:last-child td {
+  color: #5b7cfa;
+  font-weight: 600;
+}

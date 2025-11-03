@@ -1,0 +1,67 @@
+/* Estilos para el módulo de Horner Doble */
+#dividend-input, #divisor-p, #divisor-q {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  color: #e0e0e0;
+}
+
+#quotient-result, #remainder-result, #divisor-result, #verification-result {
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  color: #6bcf7f;
+  padding: 8px 12px;
+}
+
+.results-box {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.steps-container {
+  margin-top: 20px;
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.steps-container h4 {
+  color: #5b7cfa;
+  margin-bottom: 10px;
+}
+
+.step-item {
+  margin-bottom: 8px;
+  padding: 8px;
+  background-color: #252525;
+  border-radius: 4px;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.coefficient-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-family: "Courier New", monospace;
+}
+
+.coefficient-table td {
+  border: 1px solid #3a3a3a;
+  padding: 4px 8px;
+  text-align: center;
+}
+
+.coefficient-table .index {
+  background-color: #2a2a2a;
+  color: #909090;
+  font-size: 12px;
+}
+
+.coefficient-table .value {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}

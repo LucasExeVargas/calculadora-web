@@ -23,6 +23,14 @@
     <link rel="stylesheet" href="modules/punto-fijo/punto-fijo.css">
     <!-- Added CSS import for comparar module -->
     <link rel="stylesheet" href="modules/comparar/comparar.css">
+    <!-- Added CSS import for Halley module -->
+    <link rel="stylesheet" href="modules/halley/halley.css">
+    <!-- Added CSS import for Polinomio module (TP4) -->
+    <link rel="stylesheet" href="modules/polinomio/polinomio.css">
+    <!-- Added CSS import for Division module (TP4) -->
+    <link rel="stylesheet" href="modules/division/division.css">
+    <!-- Added CSS import for Horner Doble module (TP4) -->
+    <link rel="stylesheet" href="modules/horner-doble/horner-doble.css">
 </head>
 <body>
     <div class="d-flex">
@@ -69,6 +77,7 @@
                         <li><a href="#" class="submenu-link" data-page="secante">Secante</a></li>
                         <!-- Agregar opción Newton -->
                         <li><a href="#" class="submenu-link" data-page="newton">Newton</a></li>
+                        <li><a href="#" class="submenu-link" data-page="halley">Halley</a></li>
                         <!-- Added data-page attribute for punto-fijo -->
                         <li><a href="#" class="submenu-link" data-page="punto-fijo">Punto Fijo</a></li>
                         <!-- Added comparar option -->
@@ -83,8 +92,9 @@
                         <i class="fas fa-chevron-down chevron"></i>
                     </a>
                     <ul class="submenu" id="tp4-submenu">
-                        <li><a href="#" class="submenu-link">Opción 1</a></li>
-                        <li><a href="#" class="submenu-link">Opción 2</a></li>
+                        <li><a href="#" class="submenu-link" data-page="polinomio">Calcular el valor de un polinomio para un determinado punto</a></li>
+                        <li><a href="#" class="submenu-link" data-page="division">Dividir un polinomio por ax ± b (Horner*)</a></li>
+                        <li><a href="#" class="submenu-link" data-page="horner-doble">Dividir un polinomio de grado n por x² + px + q (Horner Doble)</a></li>
                         <li><a href="#" class="submenu-link">Opción 3</a></li>
                     </ul>
                 </li>
@@ -229,10 +239,18 @@
             <div id="secante-page" class="page-content" style="display: none;"></div>
             <!-- Agregar contenedor para Newton -->
             <div id="newton-page" class="page-content" style="display: none;"></div>
+            <!-- Agregar contenedor para Halley -->
+            <div id="halley-page" class="page-content" style="display: none;"></div>
+            <!-- Agregar contenedor para Polinomio (TP4) -->
+            <div id="polinomio-page" class="page-content" style="display: none;"></div>
             <!-- Added container for punto-fijo page -->
             <div id="punto-fijo-page" class="page-content" style="display: none;"></div>
             <!-- Added container for comparar page -->
             <div id="comparar-page" class="page-content" style="display: none;"></div>
+            <!-- Added container for Division (TP4) -->
+            <div id="division-page" class="page-content" style="display: none;"></div>
+            <!-- Added container for Horner Doble (TP4) -->
+            <div id="horner-doble-page" class="page-content" style="display: none;"></div>
         </main>
     </div>
 
@@ -353,11 +371,19 @@
     <script src="modules/regula-falsi-modificada/regula-falsi-modificada.js"></script>
     <!-- Importar JS del módulo Newton -->
     <script src="modules/newton-raphson/newton.js"></script>
+    <!-- Importar JS del módulo Halley -->
+    <script src="modules/halley/halley.js"></script>
     <!-- Importar JS del módulo secante -->
     <script src="modules/secante/secante.js"></script>
     <!-- Added JS import for punto-fijo module -->
     <script src="modules/punto-fijo/punto-fijo.js"></script>
     <!-- Added JS import for comparar module -->
     <script src="modules/comparar/comparar.js"></script>
+    <!-- Added JS import for Polinomio module (TP4) -->
+    <script src="modules/polinomio/polinomio.js"></script>
+    <!-- Added JS import for Division module (TP4) -->
+    <script src="modules/division/division.js"></script>
+    <!-- Added JS import for Horner Doble module (TP4) -->
+    <script src="modules/horner-doble/horner-doble.js"></script>
 </body>
 </html>

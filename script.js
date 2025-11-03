@@ -68,6 +68,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (page === "convertidor") {
         loadConvertidor()
+      } else if (page === "division") {
+        loadDivision()
       } else if (page === "biseccion") {
         loadBiseccion()
       } else if (page === "regula-falsi") {
@@ -76,18 +78,50 @@ document.addEventListener("DOMContentLoaded", () => {
         loadRegulaFalsiModificada()
       } else if (page === "newton") {
         loadNewton()
+      } else if (page === "halley") {
+        loadHalley()
       } else if (page === "secante") {
         loadSecante()
       } else if (page === "punto-fijo") {
         loadPuntoFijo()
+      } else if (page === "polinomio") {
+        loadPolinomio()
       } else if (page === "comparar") {
         loadComparar()
+      } else if (page === "horner-doble") {
+        loadHornerDoble()
       }
     })
   })
 
+  function hideAllPages() {
+    // Ocultar todas las páginas
+    const pages = [
+      "content-container",
+      "convertidor-page",
+      "biseccion-page",
+      "regula-falsi-page",
+      "regula-falsi-modificada-page",
+      "newton-page",
+      "secante-page",
+      "punto-fijo-page",
+      "comparar-page",
+      "polinomio-page",
+      "division-page",
+      "horner-doble-page"
+    ]
+    
+    pages.forEach(pageId => {
+      const page = document.getElementById(pageId)
+      if (page) {
+        page.style.display = "none"
+      }
+    })
+  }
+
   function cleanupContainer(container) {
     if (!container) return
+    hideAllPages() // Ocultar todas las páginas antes de mostrar la nueva
     const clone = container.cloneNode(false)
     container.parentNode.replaceChild(clone, container)
     return clone
@@ -102,7 +136,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("newton-page").style.display = "none"
     document.getElementById("secante-page").style.display = "none"
     document.getElementById("punto-fijo-page").style.display = "none"
-    document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
+    document.getElementById("comparar-page").style.display = "none"
+    document.getElementById("polinomio-page").style.display = "none"
+    document.getElementById("division-page").style.display = "none"
+    document.getElementById("horner-doble-page").style.display = "none"
 
     // Remover clase active de todos los menu-links
     menuLinks.forEach((link) => {
@@ -134,7 +171,10 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("newton-page").style.display = "none"
       document.getElementById("secante-page").style.display = "none"
       document.getElementById("punto-fijo-page").style.display = "none"
-      document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
+      document.getElementById("comparar-page").style.display = "none"
+      document.getElementById("polinomio-page").style.display = "none"
+      document.getElementById("division-page").style.display = "none"
+      document.getElementById("horner-doble-page").style.display = "none"
       cleanContainer.style.display = "block"
 
       if (typeof window.initializeConversor === "function") {
@@ -145,6 +185,31 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.error("[v0] Error cargando el convertidor:", error)
       pageContainer.innerHTML = "<p>Error al cargar el convertidor</p>"
+    }
+  }
+
+  async function loadDivision() {
+    const pageContainer = document.getElementById("division-page")
+    console.log("[v0] Cargando página de División de Polinomios...")
+
+    try {
+      const cleanContainer = cleanupContainer(pageContainer)
+
+      const response = await fetch("modules/division/division.html")
+      const html = await response.text()
+      cleanContainer.innerHTML = html
+
+      // Mostrar la página
+      cleanContainer.style.display = "block"
+
+      if (typeof window.initializeDivision === "function") {
+        window.initializeDivision()
+      } else {
+        console.error("[v0] initializeDivision no disponible")
+      }
+    } catch (error) {
+      console.error("[v0] Error cargando División:", error)
+      pageContainer.innerHTML = "<p>Error al cargar el módulo de División</p>"
     }
   }
 
@@ -168,7 +233,10 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("newton-page").style.display = "none"
       document.getElementById("secante-page").style.display = "none"
       document.getElementById("punto-fijo-page").style.display = "none"
-      document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
+      document.getElementById("comparar-page").style.display = "none"
+      document.getElementById("polinomio-page").style.display = "none"
+      document.getElementById("division-page").style.display = "none"
+      document.getElementById("horner-doble-page").style.display = "none"
       cleanContainer.style.display = "block"
       console.log("[v0] Página de bisección mostrada")
 
@@ -203,7 +271,10 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("newton-page").style.display = "none"
       document.getElementById("secante-page").style.display = "none"
       document.getElementById("punto-fijo-page").style.display = "none"
-      document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
+      document.getElementById("comparar-page").style.display = "none"
+      document.getElementById("polinomio-page").style.display = "none"
+      document.getElementById("division-page").style.display = "none"
+      document.getElementById("horner-doble-page").style.display = "none"
       cleanContainer.style.display = "block"
 
       if (typeof window.initializeRegulaFalsi === "function") {
@@ -235,7 +306,10 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("newton-page").style.display = "none"
       document.getElementById("secante-page").style.display = "none"
       document.getElementById("punto-fijo-page").style.display = "none"
-      document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
+      document.getElementById("comparar-page").style.display = "none"
+      document.getElementById("polinomio-page").style.display = "none"
+      document.getElementById("division-page").style.display = "none"
+      document.getElementById("horner-doble-page").style.display = "none"
       cleanContainer.style.display = "block"
 
       if (typeof window.initializeRegulaFalsiModificada === "function") {
@@ -269,7 +343,10 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("regula-falsi-modificada-page").style.display = "none"
       document.getElementById("secante-page").style.display = "none"
       document.getElementById("punto-fijo-page").style.display = "none"
-      document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
+      document.getElementById("comparar-page").style.display = "none"
+      document.getElementById("polinomio-page").style.display = "none"
+      document.getElementById("division-page").style.display = "none"
+      document.getElementById("horner-doble-page").style.display = "none"
       cleanContainer.style.display = "block"
       console.log("[v0] Página de Newton mostrada")
 
@@ -283,6 +360,46 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.error("[v0] Error cargando Newton:", error)
       pageContainer.innerHTML = "<p>Error al cargar el módulo de Newton</p>"
+    }
+  }
+
+  async function loadHalley() {
+    const pageContainer = document.getElementById("halley-page")
+    console.log("[v0] Cargando página de Halley...")
+
+    try {
+      const cleanContainer = cleanupContainer(pageContainer)
+
+      const response = await fetch("modules/halley/halley.html")
+      const html = await response.text()
+      cleanContainer.innerHTML = html
+      console.log("[v0] HTML de Halley cargado")
+
+      // Mostrar la página
+      document.getElementById("content-container").style.display = "none"
+      document.getElementById("convertidor-page").style.display = "none"
+      document.getElementById("biseccion-page").style.display = "none"
+      document.getElementById("regula-falsi-page").style.display = "none"
+      document.getElementById("regula-falsi-modificada-page").style.display = "none"
+      document.getElementById("newton-page").style.display = "none"
+      document.getElementById("secante-page").style.display = "none"
+      document.getElementById("punto-fijo-page").style.display = "none"
+      document.getElementById("comparar-page").style.display = "none"
+      document.getElementById("polinomio-page").style.display = "none"
+      document.getElementById("division-page").style.display = "none"
+      document.getElementById("horner-doble-page").style.display = "none"
+      cleanContainer.style.display = "block"
+      console.log("[v0] Página de Halley mostrada")
+
+      if (typeof window.initializeHalley === "function") {
+        console.log("[v0] Llamando a initializeHalley...")
+        window.initializeHalley()
+      } else {
+        console.error("[v0] ERROR: window.initializeHalley no es una función")
+      }
+    } catch (error) {
+      console.error("[v0] Error cargando Halley:", error)
+      pageContainer.innerHTML = "<p>Error al cargar el módulo de Halley</p>"
     }
   }
 
@@ -306,7 +423,10 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("regula-falsi-modificada-page").style.display = "none"
       document.getElementById("newton-page").style.display = "none"
       document.getElementById("punto-fijo-page").style.display = "none"
-      document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
+      document.getElementById("comparar-page").style.display = "none"
+      document.getElementById("polinomio-page").style.display = "none"
+      document.getElementById("division-page").style.display = "none"
+      document.getElementById("horner-doble-page").style.display = "none"
       cleanContainer.style.display = "block"
       console.log("[v0] Página de Secante mostrada")
 
@@ -343,7 +463,10 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("regula-falsi-modificada-page").style.display = "none"
       document.getElementById("newton-page").style.display = "none"
       document.getElementById("secante-page").style.display = "none"
-      document.getElementById("comparar-page").style.display = "none" // Added comparar page to hide list
+      document.getElementById("comparar-page").style.display = "none"
+      document.getElementById("polinomio-page").style.display = "none"
+      document.getElementById("division-page").style.display = "none"
+      document.getElementById("horner-doble-page").style.display = "none"
       cleanContainer.style.display = "block"
       console.log("[v0] Página de Punto Fijo mostrada")
 
@@ -381,6 +504,9 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("newton-page").style.display = "none"
       document.getElementById("secante-page").style.display = "none"
       document.getElementById("punto-fijo-page").style.display = "none"
+      document.getElementById("polinomio-page").style.display = "none"
+      document.getElementById("division-page").style.display = "none"
+      document.getElementById("horner-doble-page").style.display = "none"
       cleanContainer.style.display = "block"
       console.log("[v0] Página de Comparar mostrada")
 
@@ -394,6 +520,56 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.error("[v0] Error cargando Comparar:", error)
       pageContainer.innerHTML = "<p>Error al cargar el módulo de Comparar</p>"
+    }
+  }
+
+  async function loadPolinomio() {
+    const pageContainer = document.getElementById("polinomio-page")
+    console.log("[v0] Cargando página de Polinomio...")
+
+    try {
+      const cleanContainer = cleanupContainer(pageContainer)
+
+      const response = await fetch("modules/polinomio/polinomio.html")
+      const html = await response.text()
+      cleanContainer.innerHTML = html
+
+      // Mostrar la página
+      cleanContainer.style.display = "block"
+
+      if (typeof window.initializePolinomio === "function") {
+        window.initializePolinomio()
+      } else {
+        console.error("[v0] initializePolinomio no disponible")
+      }
+    } catch (error) {
+      console.error("[v0] Error cargando Polinomio:", error)
+      pageContainer.innerHTML = "<p>Error al cargar el módulo de Polinomio</p>"
+    }
+  }
+
+  async function loadHornerDoble() {
+    const pageContainer = document.getElementById("horner-doble-page")
+    console.log('[v0] Cargando página de Horner Doble...')
+
+    try {
+      const cleanContainer = cleanupContainer(pageContainer)
+
+      const response = await fetch("modules/horner-doble/horner-doble.html")
+      const html = await response.text()
+      cleanContainer.innerHTML = html
+
+      // Mostrar la página
+      cleanContainer.style.display = 'block'
+
+      if (typeof window.initializeHornerDoble === 'function') {
+        window.initializeHornerDoble()
+      } else {
+        console.error('[v0] initializeHornerDoble no disponible')
+      }
+    } catch (error) {
+      console.error('[v0] Error cargando Horner Doble:', error)
+      pageContainer.innerHTML = "<p>Error al cargar el módulo de Horner Doble</p>"
     }
   }
 

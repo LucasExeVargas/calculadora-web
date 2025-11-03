@@ -54,6 +54,50 @@
       }
     })
 
+    // Botón Caso de prueba (auto-fill y ejecutar)
+    const testBtn = document.getElementById("test-btn-punto-fijo")
+    if (testBtn) {
+      testBtn.addEventListener("click", () => {
+        // Funciones y parámetros solicitados
+        const fStr = "x^4 - 3*x^2 - 3"
+        const gStr = "(3*x^2 + 3)^(1/4)"
+
+        functionInput.value = fStr
+        document.getElementById("g-function-input-punto-fijo").value = gStr
+        document.getElementById("param-a-punto-fijo").value = "1"
+        document.getElementById("param-b-punto-fijo").value = "2"
+        document.getElementById("param-x0-punto-fijo").value = "2"
+        document.getElementById("param-error-punto-fijo").value = "0.001"
+
+        // Graficar la función F
+        graphBtn.click()
+
+        // Ejecutar método después de un breve retardo
+        setTimeout(() => {
+          // Antes de ejecutar, añadimos un listener temporal para aceptar automáticamente
+          // el modal de convergencia si aparece (continuar)
+          const continueBtn = document.getElementById("continue-btn-punto-fijo")
+          if (continueBtn) {
+            const autoContinue = () => {
+              continueBtn.click()
+              // Remover el listener después de un click
+              continueBtn.removeEventListener("click", autoContinue)
+            }
+            continueBtn.addEventListener("click", autoContinue)
+            // También intentar cerrar el modal programáticamente si ya está visible
+            const modal = document.getElementById("convergence-modal-punto-fijo")
+            if (modal && modal.style.display === "flex") {
+              // Forzar continuar
+              continueBtn.click()
+            }
+          }
+
+          // Ejecutar método
+          methodBtn.click()
+        }, 400)
+      })
+    }
+
     // Botón Usar método
     methodBtn.addEventListener("click", () => {
       const gFunctionStr = document.getElementById("g-function-input-punto-fijo").value.trim()

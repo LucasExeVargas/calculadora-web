@@ -56,6 +56,25 @@
       }
     })
 
+    // Botón Caso de prueba (auto-fill y ejecutar)
+    const testBtn = document.getElementById("test-btn-rfm")
+    if (testBtn) {
+      testBtn.addEventListener("click", () => {
+        const funcStr = "e^(-x) - sin(x)"
+        functionInput.value = funcStr
+        document.getElementById("param-a-rfm").value = "0"
+        document.getElementById("param-b-rfm").value = "1"
+
+        // Graficar
+        graphBtn.click()
+
+        // Ejecutar método después de un breve retardo
+        setTimeout(() => {
+          methodBtn.click()
+        }, 300)
+      })
+    }
+
     // Botón Usar método
     methodBtn.addEventListener("click", () => {
       const a = Number.parseFloat(document.getElementById("param-a-rfm").value)

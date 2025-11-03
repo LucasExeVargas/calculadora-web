@@ -1,0 +1,51 @@
+/* Estilos para el módulo de división de polinomios */
+#dividend-input, #divisor-a, #divisor-b {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  color: #e0e0e0;
+}
+
+.form-check-input:checked {
+  background-color: #5b7cfa;
+  border-color: #5b7cfa;
+}
+
+.form-check-label {
+  color: #e0e0e0;
+}
+
+#quotient-result, #remainder-result, #divisor-result, #verification-result {
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  color: #6bcf7f;
+  padding: 8px 12px;
+}
+
+.results-box {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.steps-container {
+  margin-top: 20px;
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.steps-container h4 {
+  color: #5b7cfa;
+  margin-bottom: 10px;
+}
+
+.step-item {
+  margin-bottom: 8px;
+  padding: 8px;
+  background-color: #252525;
+  border-radius: 4px;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+}

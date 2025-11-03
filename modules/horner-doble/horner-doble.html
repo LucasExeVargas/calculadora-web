@@ -1,0 +1,56 @@
+<!-- Página: Dividir polinomio por x² + px + q usando Horner Doble -->
+<div class="content-header">
+  <h1>División por x² + px + q</h1>
+  <p>Dividir un polinomio de grado n por x² + px + q usando el método de Horner Doble</p>
+</div>
+
+<div class="converter-container">
+  <div class="converter-section">
+    <div class="form-group">
+      <label for="dividend-input">Polinomio dividendo P(x)</label>
+      <input type="text" id="dividend-input" class="form-control" placeholder="Ej: 2*x^5 - 3*x^4 + x^3 - 5">
+      <small class="text-muted">Usa sintaxis compatible con math.js: x^2, 3*x, -5, etc.</small>
+    </div>
+
+    <div class="form-row" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div class="form-group">
+        <label for="divisor-p">Coeficiente p (de x² + px + q)</label>
+        <input type="number" id="divisor-p" class="form-control" step="0.0001" placeholder="Ej: -3">
+      </div>
+      <div class="form-group">
+        <label for="divisor-q">Coeficiente q (de x² + px + q)</label>
+        <input type="number" id="divisor-q" class="form-control" step="0.0001" placeholder="Ej: 1">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button id="divide-btn" class="btn btn-convert">Dividir</button>
+      <button id="test-btn-horner-doble" class="btn btn-convert" style="margin-left:8px; background:#2ecc71;">Caso de prueba</button>
+    </div>
+
+    <div id="result-box" class="results-box" style="margin-top:20px; display:none;">
+      <h3>Resultado de la División</h3>
+      <div class="result-item">
+        <label>Divisor:</label>
+        <div class="result-value" id="divisor-result">x² + (<span id="p-value"></span>)x + (<span id="q-value"></span>)</div>
+      </div>
+      <div class="result-item">
+        <label>Cociente Q(x):</label>
+        <div class="result-value" id="quotient-result"></div>
+      </div>
+      <div class="result-item">
+        <label>Resto R(x):</label>
+        <div class="result-value" id="remainder-result"></div>
+      </div>
+      <div class="result-item">
+        <label>Verificación: P(x) = Q(x) * (x² + px + q) + R(x)</label>
+        <div class="result-value" id="verification-result"></div>
+      </div>
+    </div>
+
+    <div id="steps-box" class="steps-container" style="margin-top:20px; display:none;">
+      <h4>Pasos del Algoritmo de Horner Doble</h4>
+      <div id="steps-content"></div>
+    </div>
+  </div>
+</div>

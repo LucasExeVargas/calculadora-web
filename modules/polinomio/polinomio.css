@@ -1,0 +1,20 @@
+/* Estilos mínimos para el módulo de polinomio */
+#polynomial-input, #polynomial-x {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  color: #e0e0e0;
+}
+
+#polynomial-result {
+  font-family: "Courier New", monospace;
+  font-size: 16px;
+  color: #6bcf7f;
+  padding: 8px 12px;
+}
+
+.results-box {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 16px;
+}

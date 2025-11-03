@@ -1,25 +1,24 @@
-// Módulo de Newton-Raphson - Usa math.js para parsear funciones y Chart.js para graficar
-// Las librerías se cargan globalmente desde CDN en index.html
+// Módulo de Halley - Usa math.js para parsear funciones y Chart.js para graficar
 ;(() => {
-  let currentFunctionNewton = null
-  let currentDerivativeNewton = null
-  let currentSecondDerivativeNewton = null
-  let currentChartNewton = null
-  let resultChartNewton = null
+  let currentFunctionHalley = null
+  let currentDerivativeHalley = null
+  let currentSecondDerivativeHalley = null
+  let currentChartHalley = null
+  let resultChartHalley = null
   let shouldContinueWithoutFourier = false
   const math = window.math
 
-  window.initializeNewton = () => {
-    console.log("[v0] Inicializando módulo de Newton...")
+  window.initializeHalley = () => {
+    console.log("[v0] Inicializando módulo de Halley...")
 
-    const graphBtn = document.getElementById("graph-btn-newton")
-    const methodBtn = document.getElementById("method-btn-newton")
-    const functionInput = document.getElementById("function-input-newton")
-    const resetZoomFunc = document.getElementById("reset-zoom-func-newton")
-    const resetZoomResult = document.getElementById("reset-zoom-result-newton")
-    const fourierModal = document.getElementById("fourier-modal")
-    const fourierContinueBtn = document.getElementById("fourier-continue-btn")
-    const fourierCancelBtn = document.getElementById("fourier-cancel-btn")
+    const graphBtn = document.getElementById("graph-btn-halley")
+    const methodBtn = document.getElementById("method-btn-halley")
+    const functionInput = document.getElementById("function-input-halley")
+    const resetZoomFunc = document.getElementById("reset-zoom-func-halley")
+    const resetZoomResult = document.getElementById("reset-zoom-result-halley")
+    const fourierModal = document.getElementById("fourier-modal-halley")
+    const fourierContinueBtn = document.getElementById("fourier-continue-btn-halley")
+    const fourierCancelBtn = document.getElementById("fourier-cancel-btn-halley")
 
     if (!graphBtn || !methodBtn || !functionInput) {
       console.error("[v0] Error: No se encontraron todos los elementos necesarios")
@@ -48,58 +47,37 @@
           return
         }
 
-        currentFunctionNewton = math.compile(functionStr)
+        currentFunctionHalley = math.compile(functionStr)
 
-        // Calcular derivada simbólicamente
+        // Calcular derivadas simbólicamente
         try {
           const node = math.parse(functionStr)
           const derivativeNode = math.derivative(node, "x")
           const secondDerivativeNode = math.derivative(derivativeNode, "x")
 
-          currentDerivativeNewton = derivativeNode.compile()
-          currentSecondDerivativeNewton = secondDerivativeNode.compile()
+          currentDerivativeHalley = derivativeNode.compile()
+          currentSecondDerivativeHalley = secondDerivativeNode.compile()
         } catch (e) {
           alert("Error al calcular la derivada: " + e.message)
           return
         }
 
-        const testValue = currentFunctionNewton.evaluate({ x: 0 })
+        const testValue = currentFunctionHalley.evaluate({ x: 0 })
 
-        document.getElementById("graph-section-newton").style.display = "block"
-        document.getElementById("results-section-newton").style.display = "none"
+        document.getElementById("graph-section-halley").style.display = "block"
+        document.getElementById("results-section-halley").style.display = "none"
 
-        plotFunctionNewton()
+        plotFunctionHalley()
       } catch (error) {
         alert("Error en la función: " + error.message + "\n\nAsegúrate de usar la sintaxis correcta.")
       }
     })
 
-    // Botón Caso de prueba (auto-fill y ejecutar)
-    const testBtn = document.getElementById("test-btn-newton")
-    if (testBtn) {
-      testBtn.addEventListener("click", () => {
-        const funcStr = "e^(-x) - sin(x)"
-        functionInput.value = funcStr
-        document.getElementById("param-x0-newton").value = "0"
-        document.getElementById("param-error-newton").value = "0.001"
-
-        // Graficar
-        graphBtn.click()
-
-        // Ejecutar método después de un pequeño retardo para asegurar que la función esté compilada
-        setTimeout(() => {
-          // Intentar ejecutar el método; si aparece el modal de Fourier, el flujo continuará con el
-          // handler del botón "fourier-continue-btn" que ya está definido.
-          methodBtn.click()
-        }, 300)
-      })
-    }
-
     // Botón Usar método
     methodBtn.addEventListener("click", () => {
-      const x0 = Number.parseFloat(document.getElementById("param-x0-newton").value)
-      const error = Number.parseFloat(document.getElementById("param-error-newton").value)
-      const maxIter = Number.parseInt(document.getElementById("param-max-iter-newton").value)
+      const x0 = Number.parseFloat(document.getElementById("param-x0-halley").value)
+      const error = Number.parseFloat(document.getElementById("param-error-halley").value)
+      const maxIter = Number.parseInt(document.getElementById("param-max-iter-halley").value)
 
       if (isNaN(x0)) {
         alert("Por favor, introduce un valor válido para X₀")
@@ -118,8 +96,8 @@
 
       try {
         // Verificar condición de Fourier: f(x0) * f''(x0) > 0
-        const fx0 = currentFunctionNewton.evaluate({ x: x0 })
-        const fppx0 = currentSecondDerivativeNewton.evaluate({ x: x0 })
+        const fx0 = currentFunctionHalley.evaluate({ x: x0 })
+        const fppx0 = currentSecondDerivativeHalley.evaluate({ x: x0 })
 
         console.log("[v0] f(x0) =", fx0, "f''(x0) =", fppx0, "Producto =", fx0 * fppx0)
 
@@ -131,7 +109,7 @@
         }
 
         // Si se cumple la condición, ejecutar el método
-        executeNewtonMethod(x0, error, maxIter)
+        executeHalleyMethod(x0, error, maxIter)
       } catch (error) {
         alert("Error al ejecutar el método: " + error.message)
       }
@@ -141,10 +119,10 @@
     if (fourierContinueBtn) {
       fourierContinueBtn.addEventListener("click", () => {
         fourierModal.classList.remove("show")
-        const x0 = Number.parseFloat(document.getElementById("param-x0-newton").value)
-        const error = Number.parseFloat(document.getElementById("param-error-newton").value)
-        const maxIter = Number.parseInt(document.getElementById("param-max-iter-newton").value)
-        executeNewtonMethod(x0, error, maxIter)
+        const x0 = Number.parseFloat(document.getElementById("param-x0-halley").value)
+        const error = Number.parseFloat(document.getElementById("param-error-halley").value)
+        const maxIter = Number.parseInt(document.getElementById("param-max-iter-halley").value)
+        executeHalleyMethod(x0, error, maxIter)
       })
     }
 
@@ -157,29 +135,48 @@
     // Botones de reset zoom
     if (resetZoomFunc) {
       resetZoomFunc.addEventListener("click", () => {
-        if (currentChartNewton) {
-          currentChartNewton.resetZoom()
+        if (currentChartHalley) {
+          currentChartHalley.resetZoom()
         }
       })
     }
 
     if (resetZoomResult) {
       resetZoomResult.addEventListener("click", () => {
-        if (resultChartNewton) {
-          resultChartNewton.resetZoom()
+        if (resultChartHalley) {
+          resultChartHalley.resetZoom()
         }
       })
     }
 
-    console.log("[v0] Módulo de Newton inicializado correctamente")
+    // Botón Caso de prueba (auto-fill y ejecutar) similar a Newton
+    const testBtn = document.getElementById("test-btn-halley")
+    if (testBtn) {
+      testBtn.addEventListener("click", () => {
+        const funcStr = "e^(-x) - sin(x)"
+        functionInput.value = funcStr
+        document.getElementById("param-x0-halley").value = "0"
+        document.getElementById("param-error-halley").value = "0.001"
+
+        // Graficar
+        graphBtn.click()
+
+        // Ejecutar método después de un breve retardo
+        setTimeout(() => {
+          methodBtn.click()
+        }, 300)
+      })
+    }
+
+    console.log("[v0] Módulo de Halley inicializado correctamente")
   }
 
-  function plotFunctionNewton() {
-    const canvas = document.getElementById("function-chart-newton")
+  function plotFunctionHalley() {
+    const canvas = document.getElementById("function-chart-halley")
     const ctx = canvas.getContext("2d")
 
-    if (currentChartNewton) {
-      currentChartNewton.destroy()
+    if (currentChartHalley) {
+      currentChartHalley.destroy()
     }
 
     const points = []
@@ -189,7 +186,7 @@
 
     for (let x = xMin; x <= xMax; x += step) {
       try {
-        const y = currentFunctionNewton.evaluate({ x: x })
+        const y = currentFunctionHalley.evaluate({ x: x })
         if (isFinite(y)) {
           points.push({ x: x, y: y })
         }
@@ -203,7 +200,7 @@
       return
     }
 
-    currentChartNewton = new window.Chart(ctx, {
+    currentChartHalley = new window.Chart(ctx, {
       type: "line",
       data: {
         datasets: [
@@ -276,16 +273,7 @@
     })
   }
 
-  function executeNewtonMethod(x0, epsilon, maxIter) {
-    try {
-      const result = newtonMethod(x0, epsilon, maxIter)
-      displayResultsNewton(result, x0)
-    } catch (error) {
-      alert("Error al ejecutar el método: " + error.message)
-    }
-  }
-
-  function newtonMethod(x0, epsilon, maxIter) {
+  function halleyMethod(x0, epsilon, maxIter) {
     const iterations = []
     let xi = x0
     let i = 0
@@ -293,27 +281,28 @@
     while (i < maxIter) {
       i++
 
-      // Calcular f(xi) y f'(xi)
-      const fxi = currentFunctionNewton.evaluate({ x: xi })
-      const fpxi = currentDerivativeNewton.evaluate({ x: xi })
+      const fxi = currentFunctionHalley.evaluate({ x: xi })
+      const fpxi = currentDerivativeHalley.evaluate({ x: xi })
+      const fppxi = currentSecondDerivativeHalley.evaluate({ x: xi })
 
-      // Verificar que la derivada no sea cero
-      if (Math.abs(fpxi) < 1e-10) {
-        throw new Error("La derivada es muy cercana a cero. No se puede continuar.")
+      // Comprobar denominador para evitar división por cero
+      const denom = 2 * Math.pow(fpxi, 2) - fxi * fppxi
+      if (Math.abs(denom) < 1e-14) {
+        throw new Error("Denominador muy cercano a cero en la fórmula de Halley")
       }
 
-      // Fórmula de Newton: x_{i+1} = x_i - f(x_i) / f'(x_i)
-      const xi1 = xi - fxi / fpxi
+      // Fórmula de Halley: x_{n+1} = x_n - 2 f f' / (2 (f')^2 - f f'')
+      const xi1 = xi - (2 * fxi * fpxi) / denom
 
       iterations.push({
         i: i,
         xi: xi,
         fxi: fxi,
         fpxi: fpxi,
+        fppxi: fppxi,
         xi1: xi1,
       })
 
-      // Verificar si encontramos la raíz o alcanzamos el error aceptable
       if (Math.abs(xi1 - xi) < epsilon) {
         return {
           root: xi1,
@@ -325,7 +314,6 @@
       xi = xi1
     }
 
-    // Si llegamos aquí, alcanzamos el máximo de iteraciones
     return {
       root: xi,
       iterations: iterations,
@@ -333,10 +321,19 @@
     }
   }
 
-  function displayResultsNewton(result, initialX0) {
-    document.getElementById("results-section-newton").style.display = "block"
+  function executeHalleyMethod(x0, epsilon, maxIter) {
+    try {
+      const result = halleyMethod(x0, epsilon, maxIter)
+      displayResultsHalley(result, x0)
+    } catch (error) {
+      alert("Error al ejecutar el método: " + error.message)
+    }
+  }
 
-    const tbody = document.getElementById("iterations-body-newton")
+  function displayResultsHalley(result, initialX0) {
+    document.getElementById("results-section-halley").style.display = "block"
+
+    const tbody = document.getElementById("iterations-body-halley")
     tbody.innerHTML = ""
 
     result.iterations.forEach((iter) => {
@@ -346,26 +343,26 @@
             <td style="padding: 12px; text-align: center; border: 1px solid #3a3a3a;">${iter.xi.toFixed(10)}</td>
             <td style="padding: 12px; text-align: center; border: 1px solid #3a3a3a;">${iter.fxi.toFixed(10)}</td>
             <td style="padding: 12px; text-align: center; border: 1px solid #3a3a3a;">${iter.fpxi.toFixed(10)}</td>
-            <td style="padding: 12px; text-align: center; border: 1px solid #3a3a3a;">${iter.xi1.toFixed(10)}</td>
+            <td style="padding: 12px; text-align: center; border: 1px solid #3a3a3a;">${iter.fppxi.toFixed(10)}</td>
         `
       tbody.appendChild(row)
     })
 
-    document.getElementById("final-root-newton").textContent = result.root.toFixed(10)
-    document.getElementById("final-iterations-newton").textContent = result.iterations.length
-    document.getElementById("final-error-newton").textContent = Math.abs(
-      currentFunctionNewton.evaluate({ x: result.root }),
+    document.getElementById("final-root-halley").textContent = result.root.toFixed(10)
+    document.getElementById("final-iterations-halley").textContent = result.iterations.length
+    document.getElementById("final-error-halley").textContent = Math.abs(
+      currentFunctionHalley.evaluate({ x: result.root }),
     ).toFixed(10)
 
-    plotFunctionWithRootNewton(result.root, initialX0)
+    plotFunctionWithRootHalley(result.root, initialX0)
   }
 
-  function plotFunctionWithRootNewton(root, x0) {
-    const canvas = document.getElementById("result-chart-newton")
+  function plotFunctionWithRootHalley(root, x0) {
+    const canvas = document.getElementById("result-chart-halley")
     const ctx = canvas.getContext("2d")
 
-    if (resultChartNewton) {
-      resultChartNewton.destroy()
+    if (resultChartHalley) {
+      resultChartHalley.destroy()
     }
 
     const points = []
@@ -375,7 +372,7 @@
 
     for (let x = xMin; x <= xMax; x += step) {
       try {
-        const y = currentFunctionNewton.evaluate({ x: x })
+        const y = currentFunctionHalley.evaluate({ x: x })
         if (isFinite(y)) {
           points.push({ x: x, y: y })
         }
@@ -384,7 +381,7 @@
       }
     }
 
-    resultChartNewton = new window.Chart(ctx, {
+    resultChartHalley = new window.Chart(ctx, {
       type: "line",
       data: {
         datasets: [
@@ -399,7 +396,7 @@
           },
           {
             label: "Punto inicial X₀",
-            data: [{ x: x0, y: currentFunctionNewton.evaluate({ x: x0 }) }],
+            data: [{ x: x0, y: currentFunctionHalley.evaluate({ x: x0 }) }],
             borderColor: "#ff6b6b",
             backgroundColor: "#ff6b6b",
             pointRadius: 8,
@@ -408,7 +405,7 @@
           },
           {
             label: "Raíz aproximada",
-            data: [{ x: root, y: currentFunctionNewton.evaluate({ x: root }) }],
+            data: [{ x: root, y: currentFunctionHalley.evaluate({ x: root }) }],
             borderColor: "#6bcf7f",
             backgroundColor: "#6bcf7f",
             pointRadius: 10,
@@ -474,4 +471,18 @@
       },
     })
   }
+
+  // Botón Caso de prueba: igual que Newton (e^(-x) - sin(x), x0=0)
+  // Rellena, grafica y ejecuta el método automáticamente
+  document.addEventListener("click", () => {
+    // Ensure DOM loaded handlers exist; we will attach below in initializeHalley when available
+  })
+
+  // Add test button handler when DOM content of the module is loaded by the loader
+  // We'll attach the listener inside initializeHalley similarly to other modules
+
+  // Attach the test button listener inside initializeHalley to have access to variables
+  const originalInit = window.initializeHalley
+  // We won't overwrite initializeHalley here — listener is already added in the function body below
+
 })()
