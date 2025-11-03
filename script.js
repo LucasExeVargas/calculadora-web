@@ -86,6 +86,10 @@ document.addEventListener("DOMContentLoaded", () => {
         loadPuntoFijo()
       } else if (page === "polinomio") {
         loadPolinomio()
+      } else if (page === "raices-enteras") {
+        loadRaicesEnteras()
+      } else if (page === "raices-racionales") {
+        loadRaicesRacionales()
       } else if (page === "comparar") {
         loadComparar()
       } else if (page === "horner-doble") {
@@ -107,6 +111,8 @@ document.addEventListener("DOMContentLoaded", () => {
       "punto-fijo-page",
       "comparar-page",
       "polinomio-page",
+      "raices-enteras-page",
+    "raices-racionales-page",
       "division-page",
       "horner-doble-page"
     ]
@@ -138,6 +144,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("punto-fijo-page").style.display = "none"
     document.getElementById("comparar-page").style.display = "none"
     document.getElementById("polinomio-page").style.display = "none"
+  document.getElementById("raices-enteras-page").style.display = "none"
+  document.getElementById("raices-racionales-page").style.display = "none"
     document.getElementById("division-page").style.display = "none"
     document.getElementById("horner-doble-page").style.display = "none"
 
@@ -185,6 +193,56 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.error("[v0] Error cargando el convertidor:", error)
       pageContainer.innerHTML = "<p>Error al cargar el convertidor</p>"
+    }
+  }
+
+  async function loadRaicesEnteras() {
+    const pageContainer = document.getElementById("raices-enteras-page")
+    console.log('[v0] Cargando página de Raíces Enteras...')
+
+    try {
+      const cleanContainer = cleanupContainer(pageContainer)
+
+      const response = await fetch('modules/raices-enteras/raices-enteras.html')
+      const html = await response.text()
+      cleanContainer.innerHTML = html
+
+      // Mostrar la página
+      cleanContainer.style.display = 'block'
+
+      if (typeof window.initializeRaicesEnteras === 'function') {
+        window.initializeRaicesEnteras()
+      } else {
+        console.error('[v0] initializeRaicesEnteras no disponible')
+      }
+    } catch (error) {
+      console.error('[v0] Error cargando Raices Enteras:', error)
+      pageContainer.innerHTML = "<p>Error al cargar el módulo de Raíces Enteras</p>"
+    }
+  }
+
+  async function loadRaicesRacionales() {
+    const pageContainer = document.getElementById("raices-racionales-page")
+    console.log('[v0] Cargando página de Raíces Racionales...')
+
+    try {
+      const cleanContainer = cleanupContainer(pageContainer)
+
+      const response = await fetch('modules/raices-racionales/raices-racionales.html')
+      const html = await response.text()
+      cleanContainer.innerHTML = html
+
+      // Mostrar la página
+      cleanContainer.style.display = 'block'
+
+      if (typeof window.initializeRaicesRacionales === 'function') {
+        window.initializeRaicesRacionales()
+      } else {
+        console.error('[v0] initializeRaicesRacionales no disponible')
+      }
+    } catch (error) {
+      console.error('[v0] Error cargando Raices Racionales:', error)
+      pageContainer.innerHTML = "<p>Error al cargar el módulo de Raíces Racionales</p>"
     }
   }
 

@@ -1,0 +1,23 @@
+/* Estilos mínimos para Raíces Racionales */
+#rr-polynomial-input {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  color: #e0e0e0;
+}
+
+#rr-result-box {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.rr-frac {
+  display: inline-block;
+  margin: 4px 6px;
+  padding: 4px 8px;
+  background: #252525;
+  border: 1px solid #333;
+  border-radius: 4px;
+  font-family: "Courier New", monospace;
+}

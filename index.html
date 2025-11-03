@@ -31,6 +31,10 @@
     <link rel="stylesheet" href="modules/division/division.css">
     <!-- Added CSS import for Horner Doble module (TP4) -->
     <link rel="stylesheet" href="modules/horner-doble/horner-doble.css">
+        <!-- Added CSS import for Raices Enteras module -->
+    <link rel="stylesheet" href="modules/raices-enteras/raices-enteras.css">
+        <!-- Added CSS import for Raices Racionales module -->
+        <link rel="stylesheet" href="modules/raices-racionales/raices-racionales.css">
 </head>
 <body>
     <div class="d-flex">
@@ -95,7 +99,8 @@
                         <li><a href="#" class="submenu-link" data-page="polinomio">Calcular el valor de un polinomio para un determinado punto</a></li>
                         <li><a href="#" class="submenu-link" data-page="division">Dividir un polinomio por ax ± b (Horner*)</a></li>
                         <li><a href="#" class="submenu-link" data-page="horner-doble">Dividir un polinomio de grado n por x² + px + q (Horner Doble)</a></li>
-                        <li><a href="#" class="submenu-link">Opción 3</a></li>
+                        <li><a href="#" class="submenu-link" data-page="raices-enteras">Raíces Enteras (divisores del término independiente)</a></li>
+                        <li><a href="#" class="submenu-link" data-page="raices-racionales">Raíces Racionales (p / q)</a></li>
                     </ul>
                 </li>
 
@@ -251,6 +256,10 @@
             <div id="division-page" class="page-content" style="display: none;"></div>
             <!-- Added container for Horner Doble (TP4) -->
             <div id="horner-doble-page" class="page-content" style="display: none;"></div>
+            <!-- Added container for Raices Enteras -->
+            <div id="raices-enteras-page" class="page-content" style="display: none;"></div>
+            <!-- Added container for Raices Racionales -->
+            <div id="raices-racionales-page" class="page-content" style="display: none;"></div>
         </main>
     </div>
 
@@ -385,5 +394,9 @@
     <script src="modules/division/division.js"></script>
     <!-- Added JS import for Horner Doble module (TP4) -->
     <script src="modules/horner-doble/horner-doble.js"></script>
+        <!-- Added JS import for Raices Enteras module -->
+        <script src="modules/raices-enteras/raices-enteras.js"></script>
+        <!-- Added JS import for Raices Racionales module -->
+        <script src="modules/raices-racionales/raices-racionales.js"></script>
 </body>
 </html>

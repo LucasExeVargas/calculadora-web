@@ -1,0 +1,36 @@
+<!-- Página: Raíces enteras (divisores del término independiente) -->
+<div class="content-header">
+  <h1>Raíces Enteras (divisores del término independiente)</h1>
+  <p>Mostrar las posibles raíces enteras — divisores del término independiente</p>
+</div>
+
+<div class="converter-container">
+  <div class="converter-section">
+    <div class="form-group">
+      <label for="re-polynomial-input">Introduce el polinomio P(x)</label>
+      <input type="text" id="re-polynomial-input" class="form-control" placeholder="Ej: x^3 - 6*x^2 + 11*x - 6">
+      <small class="text-muted">Usa sintaxis compatible con math.js: x^2, 3*x, -5, etc.</small>
+    </div>
+
+    <div class="form-group">
+      <button id="re-find-btn" class="btn btn-convert">Encontrar raíces enteras</button>
+      <button id="re-test-btn" class="btn btn-convert" style="margin-left:8px; background:#2ecc71;">Caso de prueba</button>
+    </div>
+
+    <div id="re-result-box" class="results-box" style="margin-top:20px; display:none;">
+      <h3>Posibles raíces enteras</h3>
+      <div class="result-item">
+        <label>Término independiente (P(0)):</label>
+        <div class="result-value" id="re-constant">-</div>
+      </div>
+      <div class="result-item" style="margin-top:8px;">
+        <label>Divisores enteros (±):</label>
+        <div class="result-value" id="re-divisors" style="white-space:normal"></div>
+      </div>
+      <div class="result-item" style="margin-top:8px;">
+        <label>Nota:</label>
+        <div class="result-value" id="re-note">Las raíces reales enteras posibles son divisores del término independiente.</div>
+      </div>
+    </div>
+  </div>
+</div>
