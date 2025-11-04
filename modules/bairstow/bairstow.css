@@ -1,0 +1,197 @@
+/* Estilos para el módulo de Bairstow */
+#bairstow-coefficients {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  color: #e0e0e0;
+  font-family: "Courier New", monospace;
+}
+
+.bairstow-results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.bairstow-result-box {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  padding: 15px;
+}
+
+.bairstow-result-box h4 {
+  color: #e74c3c;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.bairstow-roots-container {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #0d0d0d;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.bairstow-root-item {
+  padding: 8px;
+  margin: 5px 0;
+  background-color: #1a1a1a;
+  border-radius: 4px;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+}
+
+.bairstow-root-real {
+  color: #6bcf7f;
+  border-left: 3px solid #6bcf7f;
+}
+
+.bairstow-root-complex {
+  color: #3498db;
+  border-left: 3px solid #3498db;
+}
+
+.coefficient-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.coefficient-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.coefficient-input input {
+  width: 80px;
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  color: #e0e0e0;
+  padding: 8px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.coefficient-input label {
+  font-size: 12px;
+  color: #909090;
+  margin-top: 5px;
+}
+
+.polynomial-display {
+  font-family: "Courier New", monospace;
+  font-size: 16px;
+  color: #e74c3c;
+  background-color: #0d0d0d;
+  padding: 12px;
+  border-radius: 4px;
+  margin: 15px 0;
+  text-align: center;
+}
+
+.results-box {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .bairstow-results {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Estilos para la tabla de iteraciones */
+#iterations-table-bairstow {
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+}
+
+#iterations-table-bairstow tbody tr {
+  border-bottom: 1px solid #2a2a2a;
+}
+
+#iterations-table-bairstow tbody tr:hover {
+  background-color: #1a1a1a;
+}
+
+#iterations-table-bairstow tbody td {
+  padding: 10px;
+  text-align: center;
+  color: #b0b0b0;
+  border: 1px solid #3a3a3a;
+}
+
+#iterations-table-bairstow tbody tr:last-child td {
+  color: #e74c3c;
+  font-weight: 600;
+}
+/* Estilos adicionales para la tabla de iteraciones de Bairstow */
+#iterations-table-bairstow {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+#iterations-table-bairstow th {
+  background-color: #2a2a2a;
+  color: #e74c3c;
+  padding: 10px;
+  border: 1px solid #3a3a3a;
+  text-align: center;
+  font-weight: bold;
+}
+
+#iterations-table-bairstow td {
+  padding: 8px;
+  border: 1px solid #3a3a3a;
+  text-align: center;
+  color: #b0b0b0;
+}
+
+#iterations-table-bairstow tr:nth-child(even) {
+  background-color: #1f1f1f;
+}
+
+#iterations-table-bairstow tr:hover {
+  background-color: #2d2d2d;
+}
+
+/* Estilos para las raíces */
+.bairstow-root-item {
+  padding: 8px 12px;
+  margin: 5px 0;
+  border-radius: 4px;
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+}
+
+.bairstow-root-real {
+  background-color: rgba(107, 207, 127, 0.1);
+  border-left: 4px solid #6bcf7f;
+  color: #6bcf7f;
+}
+
+.bairstow-root-complex {
+  background-color: rgba(52, 152, 219, 0.1);
+  border-left: 4px solid #3498db;
+  color: #3498db;
+}

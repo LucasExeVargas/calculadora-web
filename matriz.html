@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carga de Matrices</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="lagrange.css" />
+  <style>
+    .matrix-container {
+      background-color: #252525;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 30px;
+      margin-top: 30px;
+      color: #e0e0e0;
+    }
+
+    .matrix-inputs {
+      display: grid;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 6px;
+    }
+
+    .matrix-inputs input {
+      width: 60px;
+      text-align: center;
+      background-color: #1a1a1a;
+      border: 1px solid #3a3a3a;
+      color: #e0e0e0;
+      border-radius: 4px;
+      padding: 6px;
+    }
+
+    .btn-generate {
+      background-color: #5b7cfa;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: 600;
+    }
+
+    .btn-generate:hover {
+      background-color: #4c63d2;
+    }
+
+    .matrix-display {
+      margin-top: 25px;
+      text-align: center;
+      font-family: "Courier New", monospace;
+      color: #5b7cfa;
+    }
+
+    .form-inline {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-content">
+    <div class="content-header">
+      <h1>Carga de Matrices y Vectores</h1>
+      <p>Ingrese las dimensiones y los valores de la matriz.</p>
+    </div>
+
+    <div class="matrix-container">
+      <div class="form-inline">
+        <div>
+          <label for="rows">Filas (n):</label>
+          <input id="rows" type="number" min="1" max="10" value="3" />
+        </div>
+        <div>
+          <label for="cols">Columnas (m):</label>
+          <input id="cols" type="number" min="1" max="10" value="3" />
+        </div>
+        <button id="generate-btn" class="btn-generate">Generar matriz</button>
+      </div>
+
+      <div id="matrix-inputs" class="matrix-inputs"></div>
+      <div id="matrix-display" class="matrix-display"></div>
+    </div>
+  </div>
+
+  <script src="matriz.js"></script>
+</body>
+</html>

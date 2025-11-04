@@ -1,0 +1,124 @@
+/* Estilos para el módulo de Newton Cotas */
+#newton-cotas-coefficients {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  color: #e0e0e0;
+  font-family: "Courier New", monospace;
+}
+
+.newton-cotas-results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.newton-cotas-bound-box {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  padding: 15px;
+}
+
+.newton-cotas-bound-box h4 {
+  color: #9b59b6;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.newton-cotas-bound-value {
+  font-family: "Courier New", monospace;
+  font-size: 16px;
+  color: #6bcf7f;
+  padding: 8px;
+  background-color: #0d0d0d;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.coefficient-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.coefficient-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.coefficient-input input {
+  width: 80px;
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  color: #e0e0e0;
+  padding: 8px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.coefficient-input label {
+  font-size: 12px;
+  color: #909090;
+  margin-top: 5px;
+}
+
+.polynomial-display {
+  font-family: "Courier New", monospace;
+  font-size: 16px;
+  color: #9b59b6;
+  background-color: #0d0d0d;
+  padding: 12px;
+  border-radius: 4px;
+  margin: 15px 0;
+  text-align: center;
+}
+
+.results-box {
+  background-color: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+/* Estilos para la tabla de iteraciones */
+#iterations-table-newton-cotas {
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+}
+
+#iterations-table-newton-cotas tbody tr {
+  border-bottom: 1px solid #2a2a2a;
+}
+
+#iterations-table-newton-cotas tbody tr:hover {
+  background-color: #1a1a1a;
+}
+
+#iterations-table-newton-cotas tbody td {
+  padding: 10px;
+  text-align: center;
+  color: #b0b0b0;
+  border: 1px solid #3a3a3a;
+}
+
+#iterations-table-newton-cotas tbody tr:last-child td {
+  color: #9b59b6;
+  font-weight: 600;
+}
+
+.bound-line {
+  border-left: 2px dashed;
+  height: 100%;
+  position: absolute;
+}
+
+.bound-positive {
+  border-color: #6bcf7f;
+}
+
+.bound-negative {
+  border-color: #ff6b6b;
+}

@@ -94,7 +94,18 @@ document.addEventListener("DOMContentLoaded", () => {
         loadComparar()
       } else if (page === "horner-doble") {
         loadHornerDoble()
+      }else if (page === "lagrange") {
+        loadLagrange()
+      }else if (page === "laguerre") {
+        loadLaguerre()
+      }else if (page === "newton-cotas") {
+        loadNewtonCotas()
+      } else if (page === "bairstow") {
+        loadBairstow()
+      } else if (page === "normas-vectores") {
+        loadNormasVectores()
       }
+
     })
   })
 
@@ -115,7 +126,13 @@ document.addEventListener("DOMContentLoaded", () => {
       "raices-racionales-page",
       "division-page",
       "horner-doble-page",
-      "halley-page" // ← AGREGAR ESTA LÍNEA
+      "halley-page",
+      "lagrange-page",
+      "laguerre-page",
+      "newton-cotas-page",
+      "bairstow-page",
+      "normas-vectores-page"
+// ← AGREGAR ESTA LÍNEA
     ]
     
     pages.forEach(pageId => {
@@ -149,7 +166,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("raices-racionales-page").style.display = "none"
     document.getElementById("division-page").style.display = "none"
     document.getElementById("horner-doble-page").style.display = "none"
-    document.getElementById("halley-page").style.display = "none" // ← AGREGAR ESTA LÍNEA
+    document.getElementById("halley-page").style.display = "none" 
+    document.getElementById("lagrange-page").style.display = "none"
+    document.getElementById("laguerre-page").style.display = "none"
+    document.getElementById("newton-cotas-page").style.display = "none"
+    document.getElementById("bairstow-page").style.display = "none"
+    document.getElementById( "normas-vectores-page").style.display = "none"/// ← AGREGAR ESTA LÍNEA
 
     // Remover clase active de todos los menu-links
     menuLinks.forEach((link) => {
@@ -638,6 +660,141 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.error('[v0] Error cargando Horner Doble:', error)
       pageContainer.innerHTML = "<p>Error al cargar el módulo de Horner Doble</p>"
+    }
+  }
+  async function loadLagrange() {
+    const pageContainer = document.getElementById("lagrange-page")
+    console.log("[v0] Cargando página de Lagrange...")
+
+    try {
+      const cleanContainer = cleanupContainer(pageContainer)
+
+      const response = await fetch("modules/lagrange/lagrange.html")
+      const html = await response.text()
+      cleanContainer.innerHTML = html
+
+      // Mostrar la página
+      cleanContainer.style.display = "block"
+
+      if (typeof window.initializeLagrange === "function") {
+        window.initializeLagrange()
+      } else {
+        console.error("[v0] initializeLagrange no disponible")
+      }
+    } catch (error) {
+      console.error("[v0] Error cargando Lagrange:", error)
+      pageContainer.innerHTML = "<p>Error al cargar el módulo de Lagrange</p>"
+    }
+  }
+  async function loadLaguerre() {
+    const pageContainer = document.getElementById("laguerre-page");
+    console.log("[v0] Cargando página de Laguerre...");
+
+    try {
+      // Limpiar contenedor
+      const cleanContainer = cleanupContainer(pageContainer);
+
+      // Cargar HTML
+      const response = await fetch("modules/laguerre/laguerre.html");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const html = await response.text();
+      cleanContainer.innerHTML = html;
+
+      // Ocultar todas las páginas y mostrar esta
+      hideAllPages();
+      cleanContainer.style.display = "block";
+
+      // Inicializar el módulo
+      if (typeof window.initializeLaguerre === "function") {
+        window.initializeLaguerre();
+      } else {
+        console.error("[v0] ERROR: initializeLaguerre no es una función");
+        console.log("[v0] window.initializeLaguerre:", typeof window.initializeLaguerre);
+      }
+    } catch (error) {
+      console.error("[v0] Error cargando Laguerre:", error);
+      pageContainer.innerHTML = `
+        <div class="content-header">
+          <h1>Error</h1>
+          <p>No se pudo cargar el módulo de Laguerre: ${error.message}</p>
+        </div>
+      `;
+    }
+  }
+  async function loadNewtonCotas() {
+    const pageContainer = document.getElementById("newton-cotas-page")
+    console.log("[v0] Cargando página de Newton Cotas...")
+
+    try {
+      const cleanContainer = cleanupContainer(pageContainer)
+
+      const response = await fetch("modules/newton-cotas/newton-cotas.html")
+      const html = await response.text()
+      cleanContainer.innerHTML = html
+
+      // Mostrar la página
+      hideAllPages()
+      cleanContainer.style.display = "block"
+
+      if (typeof window.initializeNewtonCotas === "function") {
+        window.initializeNewtonCotas()
+      } else {
+        console.error("[v0] initializeNewtonCotas no está disponible")
+      }
+    } catch (error) {
+      console.error("[v0] Error cargando Newton Cotas:", error)
+      pageContainer.innerHTML = "<p>Error cargando el módulo de Newton Cotas</p>"
+    }
+  }
+  async function loadBairstow() {
+    const pageContainer = document.getElementById("bairstow-page")
+    console.log("[v0] Cargando página de Bairstow...")
+
+    try {
+      const cleanContainer = cleanupContainer(pageContainer)
+
+      const response = await fetch("modules/bairstow/bairstow.html")
+      const html = await response.text()
+      cleanContainer.innerHTML = html
+
+      // Mostrar la página
+      hideAllPages()
+      cleanContainer.style.display = "block"
+
+      if (typeof window.initializeBairstow === "function") {
+        window.initializeBairstow()
+      } else {
+        console.error("[v0] initializeBairstow no está disponible")
+      }
+    } catch (error) {
+      console.error("[v0] Error cargando Bairstow:", error)
+      pageContainer.innerHTML = "<p>Error cargando el módulo de Bairstow</p>"
+    }
+  }
+  async function loadNormasVectores() {
+    const pageContainer = document.getElementById("normas-vectores-page");
+    console.log("[v0] Cargando página de Normas de Vectores...");
+
+    try {
+        const cleanContainer = cleanupContainer(pageContainer);
+
+        const response = await fetch("modules/normas-vectores/normas-vectores.html");
+        const html = await response.text();
+        cleanContainer.innerHTML = html;
+
+        hideAllPages();
+        cleanContainer.style.display = "block";
+
+        if (typeof window.initializeNormasVectores === "function") {
+            window.initializeNormasVectores();
+        } else {
+            console.error("[v0] initializeNormasVectores no está disponible");
+        }
+    } catch (error) {
+        console.error("[v0] Error cargando Normas de Vectores:", error);
+        pageContainer.innerHTML = "<p>Error al cargar el módulo de Normas de Vectores</p>";
     }
   }
 

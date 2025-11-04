@@ -1,0 +1,102 @@
+<!-- modules/normas-vectores/normas-vectores.html -->
+<div class="content-header">
+    <h1>Normas de Vectores</h1>
+    <p>Calcular las normas de un vector: Norma 1, Norma 2 (Euclidiana) y Norma Infinito</p>
+</div>
+
+<div class="converter-container">
+    <div class="converter-section">
+        <div class="form-group">
+            <label for="vector-dimension">Dimensión del vector</label>
+            <input type="number" id="vector-dimension" class="form-control" min="1" max="10" value="3">
+            <small class="text-muted">Selecciona la dimensión del vector (máximo 10)</small>
+        </div>
+
+        <button id="generate-vector-btn" class="btn btn-convert">Generar vector</button>
+        <button id="test-btn-vector" class="btn btn-convert" style="margin-left:8px; background:#2ecc71;">Caso de prueba</button>
+
+        <div id="vector-container" style="display: none; margin-top: 20px;">
+            <div class="results-box">
+                <h3>Componentes del vector</h3>
+                <p class="text-muted" style="margin-bottom: 15px;">
+                    Introduce los valores para el vector: v = [v₁, v₂, ..., vₙ]
+                </p>
+                
+                <div class="coefficient-inputs" id="vector-inputs">
+                    <!-- Los inputs se generarán dinámicamente aquí -->
+                </div>
+
+                <div class="polynomial-display" id="vector-preview">
+                    Vector: ...
+                </div>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button id="calculate-norms-btn" class="btn btn-convert">Calcular Normas</button>
+            </div>
+        </div>
+
+        <div id="results-section-vector" style="display: none; margin-top: 30px;">
+            <div class="results-box">
+                <h3>RESULTADOS - NORMAS DEL VECTOR</h3>
+                
+                <div class="laguerre-results">
+                    <div class="laguerre-bound-box">
+                        <h4>Norma 1 (Suma de valores absolutos)</h4>
+                        <div class="laguerre-bound-value" id="norm1-result">-</div>
+                        <small class="text-muted">||v||₁ = Σ|vᵢ|</small>
+                    </div>
+
+                    <div class="laguerre-bound-box">
+                        <h4>Norma 2 (Euclidiana)</h4>
+                        <div class="laguerre-bound-value" id="norm2-result">-</div>
+                        <small class="text-muted">||v||₂ = √(Σvᵢ²)</small>
+                    </div>
+
+                    <div class="laguerre-bound-box">
+                        <h4>Norma Infinito (Máximo valor absoluto)</h4>
+                        <div class="laguerre-bound-value" id="norm-inf-result">-</div>
+                        <small class="text-muted">||v||∞ = max|vᵢ|</small>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; padding: 15px; background-color: #252525; border-radius: 6px;">
+                    <h4 style="color: #ffd93d; margin-bottom: 10px;">Interpretación:</h4>
+                    <p style="color: #b0b0b0; font-size: 14px; margin: 0;">
+                        La <strong>Norma 1</strong> representa la suma de los valores absolutos.<br>
+                        La <strong>Norma 2</strong> es la distancia euclidiana desde el origen.<br>
+                        La <strong>Norma Infinito</strong> es el valor absoluto máximo del vector.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Representación gráfica del vector -->
+            <div class="results-box" style="margin-top: 20px;">
+                <h3>REPRESENTACIÓN GRÁFICA</h3>
+                <div id="vector-plot-container">
+                    <canvas id="vector-chart" style="max-height: 400px;"></canvas>
+                </div>
+                <small class="text-muted" style="display: block; margin-top: 10px;">
+                    * Para vectores de 2 y 3 dimensiones se muestra representación gráfica
+                </small>
+            </div>
+
+            <!-- Información adicional -->
+            <div class="results-box" style="margin-top: 20px;">
+                <h3>INFORMACIÓN ADICIONAL</h3>
+                <div class="result-item">
+                    <label>Vector unitario (dirección):</label>
+                    <div class="result-value" id="unit-vector-result">-</div>
+                </div>
+                <div class="result-item">
+                    <label>Ángulos con ejes (grados):</label>
+                    <div class="result-value" id="angles-result">-</div>
+                </div>
+                <div class="result-item">
+                    <label>Producto punto consigo mismo:</label>
+                    <div class="result-value" id="dot-product-result">-</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

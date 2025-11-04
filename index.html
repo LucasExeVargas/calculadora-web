@@ -34,7 +34,12 @@
         <!-- Added CSS import for Raices Enteras module -->
     <link rel="stylesheet" href="modules/raices-enteras/raices-enteras.css">
         <!-- Added CSS import for Raices Racionales module -->
-        <link rel="stylesheet" href="modules/raices-racionales/raices-racionales.css">
+    <link rel="stylesheet" href="modules/raices-racionales/raices-racionales.css">
+    <link rel="stylesheet" href="modules/lagrange/lagrange.css">
+    <link rel="stylesheet" href="modules/laguerre/laguerre.css">
+    <link rel="stylesheet" href="modules/newton-cotas/newton-cotas.css">
+    <link rel="stylesheet" href="modules/bairstow/bairstow.css">
+    <link rel="stylesheet" href="modules/normas-vectores/normas-vectores.css">
 </head>
 <body>
     <div class="d-flex">
@@ -99,8 +104,12 @@
                         <li><a href="#" class="submenu-link" data-page="polinomio">Calcular el valor de un polinomio para un determinado punto</a></li>
                         <li><a href="#" class="submenu-link" data-page="division">Dividir un polinomio por ax ± b (Horner*)</a></li>
                         <li><a href="#" class="submenu-link" data-page="horner-doble">Dividir un polinomio de grado n por x² + px + q (Horner Doble)</a></li>
-                        <li><a href="#" class="submenu-link" data-page="raices-enteras">Raíces Enteras (divisores del término independiente)</a></li>
-                        <li><a href="#" class="submenu-link" data-page="raices-racionales">Raíces Racionales (p / q)</a></li>
+                        <li><a href="#" class="submenu-link" data-page="raices-enteras">Posibles Raíces Enteras</a></li>
+                        <li><a href="#" class="submenu-link" data-page="raices-racionales">Posibles Raíces Racionales (p / q)</a></li>
+                        <li><a href="#" class="submenu-link" data-page="lagrange">Polinomio de Lagrange</a></li>
+                        <li><a href="#" class="submenu-link" data-page="laguerre">Método de Laguerre</a></li>
+                        <li><a href="#" class="submenu-link" data-page="newton-cotas">Método de Newton</a></li>
+                        <li><a href="#" class="submenu-link" data-page="bairstow">Método de Bairstow</a></li>
                     </ul>
                 </li>
 
@@ -111,7 +120,7 @@
                         <i class="fas fa-chevron-down chevron"></i>
                     </a>
                     <ul class="submenu" id="tp5-submenu">
-                        <li><a href="#" class="submenu-link">Opción 1</a></li>
+                        <li><a href="#" class="submenu-link" data-page="normas-vectores">Normas de Vectores</a></li>
                         <li><a href="#" class="submenu-link">Opción 2</a></li>
                         <li><a href="#" class="submenu-link">Opción 3</a></li>
                     </ul>
@@ -260,6 +269,12 @@
             <div id="raices-enteras-page" class="page-content" style="display: none;"></div>
             <!-- Added container for Raices Racionales -->
             <div id="raices-racionales-page" class="page-content" style="display: none;"></div>
+            <div id="lagrange-page" class="page-content" style="display: none;"></div>
+            <div id="laguerre-page" class="page-content" style="display: none;"></div>
+            <div id="newton-cotas-page" class="page-content" style="display: none;"></div>
+            <div id="bairstow-page" class="page-content" style="display: none;"></div>
+            <div id="normas-vectores-page" class="page-content" style="display: none;"></div>
+
         </main>
     </div>
 
@@ -394,9 +409,14 @@
     <script src="modules/division/division.js"></script>
     <!-- Added JS import for Horner Doble module (TP4) -->
     <script src="modules/horner-doble/horner-doble.js"></script>
-        <!-- Added JS import for Raices Enteras module -->
-        <script src="modules/raices-enteras/raices-enteras.js"></script>
-        <!-- Added JS import for Raices Racionales module -->
-        <script src="modules/raices-racionales/raices-racionales.js"></script>
+    <!-- Added JS import for Raices Enteras module -->
+    <script src="modules/raices-enteras/raices-enteras.js"></script>
+    <!-- Added JS import for Raices Racionales module -->
+    <script src="modules/raices-racionales/raices-racionales.js"></script>
+    <script src="modules/lagrange/lagrange.js"></script>
+    <script src="modules/laguerre/laguerre.js"></script>
+    <script src="modules/newton-cotas/newton-cotas.js"></script>
+    <script src="modules/bairstow/bairstow.js"></script>
+    <script src="modules/normas-vectores/normas-vectores.js"></script>
 </body>
 </html>

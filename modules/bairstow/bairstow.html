@@ -1,0 +1,128 @@
+<!-- Página: Método de Bairstow para encontrar raíces de polinomios -->
+<div class="content-header">
+  <h1>Método de Bairstow</h1>
+  <p>Encontrar todas las raíces de un polinomio usando el método de Bairstow</p>
+</div>
+
+<div class="converter-container">
+  <div class="converter-section">
+    <div class="form-group">
+      <label for="bairstow-degree">Grado del polinomio</label>
+      <input type="number" id="bairstow-degree" class="form-control" min="1" max="10" value="3">
+      <small class="text-muted">Selecciona el grado del polinomio (máximo 10)</small>
+    </div>
+
+    <button id="generate-coefficients-btn-bairstow" class="btn btn-convert">Generar coeficientes</button>
+
+    <button id="test-btn-bairstow" class="btn btn-convert" style="margin-left:8px; background:#2ecc71;">Caso de prueba</button>
+
+    <div id="coefficients-container-bairstow" style="display: none; margin-top: 20px;">
+      <div class="results-box">
+        <h3>Coeficientes del polinomio</h3>
+        <p class="text-muted" style="margin-bottom: 15px;">
+          Introduce los coeficientes para el polinomio: a₀xⁿ + a₁xⁿ⁻¹ + ... + aₙ
+        </p>
+        
+        <div class="coefficient-inputs" id="coefficients-inputs-bairstow">
+          <!-- Los inputs se generarán dinámicamente aquí -->
+        </div>
+
+        <div class="polynomial-display" id="polynomial-preview-bairstow">
+          Polinomio: ...
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bairstow-r0">Valor inicial de r</label>
+              <input type="number" id="bairstow-r0" class="form-control" step="0.1" value="1.0">
+            </div>
+            <div class="form-group">
+              <label for="bairstow-s0">Valor inicial de s</label>
+              <input type="number" id="bairstow-s0" class="form-control" step="0.1" value="1.0">
+            </div>
+            <div class="form-group">
+              <label for="bairstow-tolerance">Tolerancia (ε)</label>
+              <input type="number" id="bairstow-tolerance" class="form-control" step="1e-6" min="1e-10" value="0.000001">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <button id="bairstow-calculate-btn" class="btn btn-convert">Calcular Raíces con Bairstow</button>
+      </div>
+    </div>
+
+    <div id="results-section-bairstow" style="display: none; margin-top: 30px;">
+      <div class="results-box">
+        <h3>RESULTADOS - MÉTODO DE BAIRSTOW</h3>
+        
+        <div class="bairstow-results">
+          <div class="bairstow-result-box">
+            <h4>Raíces Encontradas</h4>
+            <div class="bairstow-roots-container" id="bairstow-roots-result">
+              <!-- Las raíces se mostrarán aquí -->
+            </div>
+          </div>
+
+          <div class="bairstow-result-box">
+            <h4>Información de Convergencia</h4>
+            <div class="result-item">
+              <label>¿Convergió?</label>
+              <div class="result-value" id="bairstow-converged-result">-</div>
+            </div>
+            <div class="result-item">
+              <label>Mensaje:</label>
+              <div class="result-value" id="bairstow-message-result">-</div>
+            </div>
+            <div class="result-item">
+              <label>Valores finales:</label>
+              <div class="result-value">
+                r = <span id="bairstow-r-final">-</span>, 
+                s = <span id="bairstow-s-final">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; padding: 15px; background-color: #252525; border-radius: 6px;">
+          <h4 style="color: #ffd93d; margin-bottom: 10px;">Interpretación:</h4>
+          <p style="color: #b0b0b0; font-size: 14px; margin: 0;">
+            El método de Bairstow encuentra raíces reales y complejas de polinomios mediante factorización cuadrática iterativa.
+          </p>
+        </div>
+      </div>
+
+      <!-- Gráfico del polinomio con raíces -->
+      <div class="results-box" style="margin-top: 20px;">
+        <h3>GRÁFICO DEL POLINOMIO CON RAÍCES</h3>
+        <canvas id="bairstow-chart" style="max-height: 400px;"></canvas>
+        <div style="margin-top:10px; display:flex; gap:8px;">
+          <button id="reset-zoom-bairstow" class="btn btn-convert" style="background:#4a4a4a;">Reset zoom</button>
+        </div>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="results-box" style="margin-top: 20px;">
+        <h3>INFORMACIÓN ADICIONAL</h3>
+        <div class="result-item">
+          <label>Grado del polinomio:</label>
+          <div class="result-value" id="bairstow-degree-result">-</div>
+        </div>
+        <div class="result-item">
+          <label>Número de raíces encontradas:</label>
+          <div class="result-value" id="bairstow-roots-count">-</div>
+        </div>
+        <div class="result-item">
+          <label>Raíces reales:</label>
+          <div class="result-value" id="bairstow-real-roots">-</div>
+        </div>
+        <div class="result-item">
+          <label>Raíces complejas:</label>
+          <div class="result-value" id="bairstow-complex-roots">-</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

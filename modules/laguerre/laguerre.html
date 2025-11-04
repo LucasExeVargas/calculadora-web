@@ -1,0 +1,106 @@
+<!-- Página: Método de Laguerre para cotas de raíces de polinomios -->
+<div class="content-header">
+  <h1>Método de Laguerre</h1>
+  <p>Calcular las cotas superior e inferior para las raíces reales de un polinomio usando el método de Laguerre</p>
+</div>
+
+<div class="converter-container">
+  <div class="converter-section">
+    <div class="form-group">
+      <label for="laguerre-degree">Grado del polinomio</label>
+      <input type="number" id="laguerre-degree" class="form-control" min="1" max="10" value="2">
+      <small class="text-muted">Selecciona el grado del polinomio (máximo 10)</small>
+    </div>
+
+    <button id="generate-coefficients-btn-laguerre" class="btn btn-convert">Generar coeficientes</button>
+
+    <button id="test-btn-laguerre" class="btn btn-convert" style="margin-left:8px; background:#2ecc71;">Caso de prueba</button>
+
+    <div id="coefficients-container-laguerre" style="display: none; margin-top: 20px;">
+      <div class="results-box">
+        <h3>Coeficientes del polinomio</h3>
+        <p class="text-muted" style="margin-bottom: 15px;">
+          Introduce los coeficientes para el polinomio: a₀xⁿ + a₁xⁿ⁻¹ + ... + aₙ
+        </p>
+        
+        <div class="coefficient-inputs" id="coefficients-inputs-laguerre">
+          <!-- Los inputs se generarán dinámicamente aquí -->
+        </div>
+
+        <div class="polynomial-display" id="polynomial-preview-laguerre">
+          Polinomio: ...
+        </div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <button id="laguerre-calculate-btn" class="btn btn-convert">Calcular Cotas de Laguerre</button>
+      </div>
+    </div>
+
+    <div id="results-section-laguerre" style="display: none; margin-top: 30px;">
+      <div class="results-box">
+        <h3>RESULTADOS - COTAS DE LAGUERRE</h3>
+        
+        <div class="laguerre-results">
+          <div class="laguerre-bound-box">
+            <h4>L (Cota superior positiva)</h4>
+            <div class="laguerre-bound-value" id="L-plus-result">-</div>
+            <small class="text-muted">Todas las raíces positivas son menores que este valor</small>
+          </div>
+
+          <div class="laguerre-bound-box">
+            <h4>L₁ (Cota inferior positiva)</h4>
+            <div class="laguerre-bound-value" id="L1-plus-result">-</div>
+            <small class="text-muted">Todas las raíces positivas son mayores que este valor</small>
+          </div>
+
+          <div class="laguerre-bound-box">
+            <h4>L₂ (Cota superior negativa)</h4>
+            <div class="laguerre-bound-value" id="L2-minus-result">-</div>
+            <small class="text-muted">Todas las raíces negativas son mayores que este valor</small>
+          </div>
+
+          <div class="laguerre-bound-box">
+            <h4>L₃ (Cota inferior negativa)</h4>
+            <div class="laguerre-bound-value" id="L3-minus-result">-</div>
+            <small class="text-muted">Todas las raíces negativas son menores que este valor</small>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; padding: 15px; background-color: #252525; border-radius: 6px;">
+          <h4 style="color: #ffd93d; margin-bottom: 10px;">Interpretación:</h4>
+          <p style="color: #b0b0b0; font-size: 14px; margin: 0;">
+            Las raíces reales del polinomio se encuentran en los intervalos:<br>
+            Positivas: (L₁, L) &nbsp;&nbsp;|&nbsp;&nbsp; Negativas: (L₂, L₃)
+          </p>
+        </div>
+      </div>
+
+      <!-- Gráfico del polinomio con cotas -->
+      <div class="results-box" style="margin-top: 20px;">
+        <h3>GRÁFICO DEL POLINOMIO CON COTAS</h3>
+        <canvas id="laguerre-chart" style="max-height: 400px;"></canvas>
+        <div style="margin-top:10px; display:flex; gap:8px;">
+          <button id="reset-zoom-laguerre" class="btn btn-convert" style="background:#4a4a4a;">Reset zoom</button>
+        </div>
+      </div>
+
+      <!-- Información adicional sobre raíces -->
+      <div class="results-box" style="margin-top: 20px;">
+        <h3>INFORMACIÓN ADICIONAL</h3>
+        <div class="result-item">
+          <label>Intervalo de búsqueda para raíces positivas:</label>
+          <div class="result-value" id="positive-interval-laguerre">-</div>
+        </div>
+        <div class="result-item">
+          <label>Intervalo de búsqueda para raíces negativas:</label>
+          <div class="result-value" id="negative-interval-laguerre">-</div>
+        </div>
+        <div class="result-item">
+          <label>Número máximo de raíces reales:</label>
+          <div class="result-value" id="max-real-roots-laguerre">-</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
