@@ -54,22 +54,45 @@ window.initializeRegulaFalsi = () => {
     }
   })
 
-  // Botón Caso de prueba (auto-fill y ejecutar)
-  const testBtn = document.getElementById("test-btn-rf")
-  if (testBtn) {
-    testBtn.addEventListener("click", () => {
-      const funcStr = "e^(-x) - sin(x)"
-      functionInput.value = funcStr
-      document.getElementById("param-a-rf").value = "0"
-      document.getElementById("param-b-rf").value = "1"
+  // Botones Caso de prueba (auto-fill y ejecutar) — tres niveles: fácil/medio/difícil
+  const testEasyBtn = document.getElementById("test-easy-rf")
+  const testMediumBtn = document.getElementById("test-medium-rf")
+  const testHardBtn = document.getElementById("test-hard-rf")
 
-      // Graficar
-      graphBtn.click()
+  function setupAndRunRF(funcStr, a, b, errorVal, maxIter = 100) {
+    functionInput.value = funcStr
+    document.getElementById("param-a-rf").value = String(a)
+    document.getElementById("param-b-rf").value = String(b)
+    document.getElementById("param-error-rf").value = String(errorVal)
+    document.getElementById("param-max-iter-rf").value = String(maxIter)
 
-      // Ejecutar método después de un corto retardo
-      setTimeout(() => {
-        methodBtn.click()
-      }, 300)
+    // Graficar
+    graphBtn.click()
+
+    // Ejecutar método después de un corto retardo
+    setTimeout(() => {
+      methodBtn.click()
+    }, 300)
+  }
+
+  if (testEasyBtn) {
+    // Caso de Prueba 1 (Fácil)
+    testEasyBtn.addEventListener("click", () => {
+      setupAndRunRF("x^2 - 4", 1, 3, 0.001)
+    })
+  }
+
+  if (testMediumBtn) {
+    // Caso de Prueba 2 (Medio)
+    testMediumBtn.addEventListener("click", () => {
+      setupAndRunRF("x^3 - 2*x - 5", 2, 3, 0.0001)
+    })
+  }
+
+  if (testHardBtn) {
+    // Caso de Prueba 3 (Difícil)
+    testHardBtn.addEventListener("click", () => {
+      setupAndRunRF("e^(-x) - cos(x)", 1, 2, 0.00001)
     })
   }
 

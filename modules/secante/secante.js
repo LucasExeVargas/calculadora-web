@@ -58,23 +58,45 @@
       }
     })
 
-    // Botón Caso de prueba (auto-fill y ejecutar)
-    const testBtn = document.getElementById("test-btn-secante")
-    if (testBtn) {
-      testBtn.addEventListener("click", () => {
-        const funcStr = "e^(-x) - sin(x)"
-        functionInput.value = funcStr
-        document.getElementById("param-x0-secante").value = "0"
-        document.getElementById("param-x1-secante").value = "1"
-        document.getElementById("param-error-secante").value = "0.001"
+    // Tres botones Caso de prueba (auto-fill y ejecutar) - Fácil / Medio / Difícil
+    const testEasySecante = document.getElementById("test-easy-secante")
+    const testMediumSecante = document.getElementById("test-medium-secante")
+    const testHardSecante = document.getElementById("test-hard-secante")
 
-        // Graficar
-        graphBtn.click()
+    function setupAndRunSecante(funcStr, x0, x1, errorVal, maxIter = 100) {
+      functionInput.value = funcStr
+      document.getElementById("param-x0-secante").value = String(x0)
+      document.getElementById("param-x1-secante").value = String(x1)
+      document.getElementById("param-error-secante").value = String(errorVal)
+      document.getElementById("param-max-iter-secante").value = String(maxIter)
 
-        // Ejecutar método después de un breve retardo
-        setTimeout(() => {
-          methodBtn.click()
-        }, 300)
+      // Graficar
+      graphBtn.click()
+
+      // Ejecutar método después de un breve retardo
+      setTimeout(() => {
+        methodBtn.click()
+      }, 300)
+    }
+
+    if (testEasySecante) {
+      testEasySecante.addEventListener("click", () => {
+        // Fácil: f(x) = x^2 - 4, x0=1, x1=3, eps=0.001
+        setupAndRunSecante("x^2 - 4", 1, 3, 0.001)
+      })
+    }
+
+    if (testMediumSecante) {
+      testMediumSecante.addEventListener("click", () => {
+        // Medio: f(x) = x^3 - 2*x - 5, x0=2, x1=3, eps=0.0001
+        setupAndRunSecante("x^3 - 2*x - 5", 2, 3, 0.0001)
+      })
+    }
+
+    if (testHardSecante) {
+      testHardSecante.addEventListener("click", () => {
+        // Difícil: f(x) = e^(-x) - cos(x), x0=1.0, x1=1.5, eps=0.00001
+        setupAndRunSecante("e^(-x) - cos(x)", 1.0, 1.5, 0.00001)
       })
     }
 

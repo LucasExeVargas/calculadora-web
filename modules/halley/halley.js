@@ -152,22 +152,44 @@
       })
     }
 
-    // Botón Caso de prueba (auto-fill y ejecutar) similar a Newton
-    const testBtn = document.getElementById("test-btn-halley")
-    if (testBtn) {
-      testBtn.addEventListener("click", () => {
-        const funcStr = "e^(-x) - sin(x)"
-        functionInput.value = funcStr
-        document.getElementById("param-x0-halley").value = "0"
-        document.getElementById("param-error-halley").value = "0.001"
+    // Tres botones Caso de prueba (auto-fill y ejecutar) - Fácil / Medio / Difícil
+    const testEasyBtnHalley = document.getElementById("test-easy-halley")
+    const testMediumBtnHalley = document.getElementById("test-medium-halley")
+    const testHardBtnHalley = document.getElementById("test-hard-halley")
 
-        // Graficar
-        graphBtn.click()
+    function setupAndRunHalley(funcStr, x0, errorVal, maxIter = 100) {
+      functionInput.value = funcStr
+      document.getElementById("param-x0-halley").value = String(x0)
+      document.getElementById("param-error-halley").value = String(errorVal)
+      document.getElementById("param-max-iter-halley").value = String(maxIter)
 
-        // Ejecutar método después de un breve retardo
-        setTimeout(() => {
-          methodBtn.click()
-        }, 300)
+      // Graficar
+      graphBtn.click()
+
+      // Ejecutar método después de un breve retardo para asegurar compilación
+      setTimeout(() => {
+        methodBtn.click()
+      }, 300)
+    }
+
+    if (testEasyBtnHalley) {
+      testEasyBtnHalley.addEventListener("click", () => {
+        // Caso Fácil: f(x) = x^2 - 4, x0 = 3, eps = 0.001
+        setupAndRunHalley("x^2 - 4", 3, 0.001)
+      })
+    }
+
+    if (testMediumBtnHalley) {
+      testMediumBtnHalley.addEventListener("click", () => {
+        // Caso Medio: f(x) = x^3 - 2*x - 5, x0 = 2.5, eps = 0.0001
+        setupAndRunHalley("x^3 - 2*x - 5", 2.5, 0.0001)
+      })
+    }
+
+    if (testHardBtnHalley) {
+      testHardBtnHalley.addEventListener("click", () => {
+        // Caso Difícil: f(x) = e^(-x) - cos(x), x0 = 1.0, eps = 0.00001
+        setupAndRunHalley("e^(-x) - cos(x)", 1.0, 0.00001)
       })
     }
 

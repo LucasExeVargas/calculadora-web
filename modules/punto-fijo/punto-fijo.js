@@ -57,47 +57,62 @@
       }
     })
 
-    // Botón Caso de prueba (auto-fill y ejecutar)
-    const testBtn = document.getElementById("test-btn-punto-fijo")
-    if (testBtn) {
-      testBtn.addEventListener("click", () => {
-        // Funciones y parámetros solicitados
-        const fStr = "x^4 - 3*x^2 - 3"
-        const gStr = "(3*x^2 + 3)^(1/4)"
+    // Tres botones Caso de prueba (auto-fill y ejecutar) - Fácil / Medio / Difícil
+    const testEasyPF = document.getElementById("test-easy-punto-fijo")
+    const testMediumPF = document.getElementById("test-medium-punto-fijo")
+    const testHardPF = document.getElementById("test-hard-punto-fijo")
 
-        functionInput.value = fStr
-        document.getElementById("g-function-input-punto-fijo").value = gStr
-        document.getElementById("param-a-punto-fijo").value = "1"
-        document.getElementById("param-b-punto-fijo").value = "2"
-        document.getElementById("param-x0-punto-fijo").value = "2"
-        document.getElementById("param-error-punto-fijo").value = "0.001"
+    function setupAndRunPuntoFijo(fStr, gStr, a, b, x0, errorVal, maxIter = 100) {
+      functionInput.value = fStr
+      document.getElementById("g-function-input-punto-fijo").value = gStr
+      document.getElementById("param-a-punto-fijo").value = String(a)
+      document.getElementById("param-b-punto-fijo").value = String(b)
+      document.getElementById("param-x0-punto-fijo").value = String(x0)
+      document.getElementById("param-error-punto-fijo").value = String(errorVal)
+      document.getElementById("param-max-iter-punto-fijo").value = String(maxIter)
 
-        // Graficar la función F
-        graphBtn.click()
+      // Graficar la función F
+      graphBtn.click()
 
-        // Ejecutar método después de un breve retardo
-        setTimeout(() => {
-          // Antes de ejecutar, añadimos un listener temporal para aceptar automáticamente
-          // el modal de convergencia si aparece (continuar)
-          const continueBtn = document.getElementById("continue-btn-punto-fijo")
-          if (continueBtn) {
-            const autoContinue = () => {
-              continueBtn.click()
-              // Remover el listener después de un click
-              continueBtn.removeEventListener("click", autoContinue)
-            }
-            continueBtn.addEventListener("click", autoContinue)
-            // También intentar cerrar el modal programáticamente si ya está visible
-            const modal = document.getElementById("convergence-modal-punto-fijo")
-            if (modal && modal.style.display === "flex") {
-              // Forzar continuar
-              continueBtn.click()
-            }
+      // Ejecutar método después de un breve retardo
+      setTimeout(() => {
+        // Auto-aceptar modal de convergencia si aparece
+        const continueBtn = document.getElementById("continue-btn-punto-fijo")
+        if (continueBtn) {
+          const autoContinue = () => {
+            continueBtn.click()
+            continueBtn.removeEventListener("click", autoContinue)
           }
+          continueBtn.addEventListener("click", autoContinue)
+          const modal = document.getElementById("convergence-modal-punto-fijo")
+          if (modal && modal.style.display === "flex") {
+            continueBtn.click()
+          }
+        }
 
-          // Ejecutar método
-          methodBtn.click()
-        }, 400)
+        // Ejecutar método
+        methodBtn.click()
+      }, 400)
+    }
+
+    if (testEasyPF) {
+      testEasyPF.addEventListener("click", () => {
+        // Caso 1 (Fácil): f(x) = x^2 - 4; se propone g(x) = 2 (constante), intervalo [1,3], x0=2.5, eps=0.001
+        setupAndRunPuntoFijo("x^2 - 4", "2", 1, 3, 2.5, 0.001)
+      })
+    }
+
+    if (testMediumPF) {
+      testMediumPF.addEventListener("click", () => {
+        // Caso 2 (Medio): f(x) = x^3 - 2x - 5; g(x) = (2*x + 5)^(1/3), intervalo [2,3], x0=2.5, eps=0.0001
+        setupAndRunPuntoFijo("x^3 - 2*x - 5", "(2*x + 5)^(1/3)", 2, 3, 2.5, 0.0001)
+      })
+    }
+
+    if (testHardPF) {
+      testHardPF.addEventListener("click", () => {
+        // Caso 3 (Difícil): f(x) = e^(-x) - cos(x); g(x) = x + 0.5*(e^(-x) - cos(x)), intervalo [1,1.5], x0=1.2, eps=1e-5
+        setupAndRunPuntoFijo("e^(-x) - cos(x)", "x + 0.5*(e^(-x) - cos(x))", 1, 1.5, 1.2, 0.00001)
       })
     }
 

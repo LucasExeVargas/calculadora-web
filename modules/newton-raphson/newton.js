@@ -74,24 +74,44 @@
       }
     })
 
-    // Botón Caso de prueba (auto-fill y ejecutar)
-    const testBtn = document.getElementById("test-btn-newton")
-    if (testBtn) {
-      testBtn.addEventListener("click", () => {
-        const funcStr = "e^(-x) - sin(x)"
-        functionInput.value = funcStr
-        document.getElementById("param-x0-newton").value = "0"
-        document.getElementById("param-error-newton").value = "0.001"
+    // Tres botones Caso de prueba (auto-fill y ejecutar) - Fácil / Medio / Difícil
+    const testEasyBtn = document.getElementById("test-easy-newton")
+    const testMediumBtn = document.getElementById("test-medium-newton")
+    const testHardBtn = document.getElementById("test-hard-newton")
 
-        // Graficar
-        graphBtn.click()
+    function setupAndRunNewton(funcStr, x0, errorVal, maxIter = 100) {
+      functionInput.value = funcStr
+      document.getElementById("param-x0-newton").value = String(x0)
+      document.getElementById("param-error-newton").value = String(errorVal)
+      document.getElementById("param-max-iter-newton").value = String(maxIter)
 
-        // Ejecutar método después de un pequeño retardo para asegurar que la función esté compilada
-        setTimeout(() => {
-          // Intentar ejecutar el método; si aparece el modal de Fourier, el flujo continuará con el
-          // handler del botón "fourier-continue-btn" que ya está definido.
-          methodBtn.click()
-        }, 300)
+      // Graficar
+      graphBtn.click()
+
+      // Ejecutar método después de un pequeño retardo para asegurar que la función esté compilada
+      setTimeout(() => {
+        methodBtn.click()
+      }, 300)
+    }
+
+    if (testEasyBtn) {
+      testEasyBtn.addEventListener("click", () => {
+        // Caso Fácil: f(x) = x^2 - 4, x0 = 3, eps = 0.001
+        setupAndRunNewton("x^2 - 4", 3, 0.001)
+      })
+    }
+
+    if (testMediumBtn) {
+      testMediumBtn.addEventListener("click", () => {
+        // Caso Medio: f(x) = x^3 - 2*x - 5, x0 = 2.5, eps = 0.0001
+        setupAndRunNewton("x^3 - 2*x - 5", 2.5, 0.0001)
+      })
+    }
+
+    if (testHardBtn) {
+      testHardBtn.addEventListener("click", () => {
+        // Caso Difícil: f(x) = e^(-x) - cos(x), x0 = 1.0, eps = 0.00001
+        setupAndRunNewton("e^(-x) - cos(x)", 1.0, 0.00001)
       })
     }
 

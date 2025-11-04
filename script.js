@@ -112,9 +112,10 @@ document.addEventListener("DOMContentLoaded", () => {
       "comparar-page",
       "polinomio-page",
       "raices-enteras-page",
-    "raices-racionales-page",
+      "raices-racionales-page",
       "division-page",
-      "horner-doble-page"
+      "horner-doble-page",
+      "halley-page" // ← AGREGAR ESTA LÍNEA
     ]
     
     pages.forEach(pageId => {
@@ -144,10 +145,11 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("punto-fijo-page").style.display = "none"
     document.getElementById("comparar-page").style.display = "none"
     document.getElementById("polinomio-page").style.display = "none"
-  document.getElementById("raices-enteras-page").style.display = "none"
-  document.getElementById("raices-racionales-page").style.display = "none"
+    document.getElementById("raices-enteras-page").style.display = "none"
+    document.getElementById("raices-racionales-page").style.display = "none"
     document.getElementById("division-page").style.display = "none"
     document.getElementById("horner-doble-page").style.display = "none"
+    document.getElementById("halley-page").style.display = "none" // ← AGREGAR ESTA LÍNEA
 
     // Remover clase active de todos los menu-links
     menuLinks.forEach((link) => {
@@ -183,6 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("polinomio-page").style.display = "none"
       document.getElementById("division-page").style.display = "none"
       document.getElementById("horner-doble-page").style.display = "none"
+      document.getElementById("halley-page").style.display = "none"
       cleanContainer.style.display = "block"
 
       if (typeof window.initializeConversor === "function") {
@@ -295,6 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("polinomio-page").style.display = "none"
       document.getElementById("division-page").style.display = "none"
       document.getElementById("horner-doble-page").style.display = "none"
+      document.getElementById("halley-page").style.display = "none"
       cleanContainer.style.display = "block"
       console.log("[v0] Página de bisección mostrada")
 
@@ -333,6 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("polinomio-page").style.display = "none"
       document.getElementById("division-page").style.display = "none"
       document.getElementById("horner-doble-page").style.display = "none"
+      document.getElementById("halley-page").style.display = "none"
       cleanContainer.style.display = "block"
 
       if (typeof window.initializeRegulaFalsi === "function") {
@@ -368,6 +373,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("polinomio-page").style.display = "none"
       document.getElementById("division-page").style.display = "none"
       document.getElementById("horner-doble-page").style.display = "none"
+      document.getElementById("halley-page").style.display = "none"
       cleanContainer.style.display = "block"
 
       if (typeof window.initializeRegulaFalsiModificada === "function") {
@@ -405,6 +411,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("polinomio-page").style.display = "none"
       document.getElementById("division-page").style.display = "none"
       document.getElementById("horner-doble-page").style.display = "none"
+      document.getElementById("halley-page").style.display = "none"
       cleanContainer.style.display = "block"
       console.log("[v0] Página de Newton mostrada")
 
@@ -485,6 +492,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("polinomio-page").style.display = "none"
       document.getElementById("division-page").style.display = "none"
       document.getElementById("horner-doble-page").style.display = "none"
+      document.getElementById("halley-page").style.display = "none"
       cleanContainer.style.display = "block"
       console.log("[v0] Página de Secante mostrada")
 
@@ -525,6 +533,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("polinomio-page").style.display = "none"
       document.getElementById("division-page").style.display = "none"
       document.getElementById("horner-doble-page").style.display = "none"
+      document.getElementById("halley-page").style.display = "none"
       cleanContainer.style.display = "block"
       console.log("[v0] Página de Punto Fijo mostrada")
 
@@ -565,6 +574,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("polinomio-page").style.display = "none"
       document.getElementById("division-page").style.display = "none"
       document.getElementById("horner-doble-page").style.display = "none"
+      document.getElementById("halley-page").style.display = "none"
       cleanContainer.style.display = "block"
       console.log("[v0] Página de Comparar mostrada")
 
