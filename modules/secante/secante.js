@@ -4,6 +4,9 @@
   let currentFunctionSecante = null
   let currentChartSecante = null
   let resultChartSecante = null
+  let isDraggingSecante = false
+  let lastXSecante = 0
+  let lastYSecante = 0
   const math = window.math
 
   window.initializeSecante = () => {
@@ -138,9 +141,9 @@
     }
 
     const points = []
-    const xMin = -10
-    const xMax = 10
-    const step = 0.1
+    const xMin = -50  // Limitado a 50
+    const xMax = 50   // Limitado a 50
+    const step = 0.5
 
     for (let x = xMin; x <= xMax; x += step) {
       try {
@@ -176,6 +179,10 @@
       options: {
         responsive: true,
         maintainAspectRatio: true,
+        interaction: {
+          mode: 'nearest',
+          intersect: false,
+        },
         plugins: {
           legend: {
             labels: {
@@ -191,10 +198,25 @@
                 enabled: true,
               },
               mode: "xy",
+              onZoom: ({chart}) => {
+                try {
+                  resampleChartSecante(chart)
+                } catch (e) {
+                  console.error('[v0] Error remuestreando al hacer zoom:', e)
+                }
+              },
+              onPan: ({chart}) => {
+                try {
+                  resampleChartSecante(chart)
+                } catch (e) {
+                  console.error('[v0] Error remuestreando al hacer pan:', e)
+                }
+              },
             },
             pan: {
               enabled: true,
               mode: "xy",
+              modifierKey: null,
             },
           },
         },
@@ -206,6 +228,8 @@
               text: "x",
               color: "#e0e0e0",
             },
+            min: -50,
+            max: 50,
             ticks: {
               color: "#b0b0b0",
             },
@@ -219,6 +243,8 @@
               text: "f(x)",
               color: "#e0e0e0",
             },
+            min: -50,
+            max: 50,
             ticks: {
               color: "#b0b0b0",
             },
@@ -227,8 +253,181 @@
             },
           },
         },
+        onHover: (event, elements) => {
+          const canvas = event.native?.target;
+          if (canvas && !isDraggingSecante) {
+            canvas.style.cursor = elements.length > 0 ? 'pointer' : 'grab';
+          }
+        },
+        events: ['mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend'],
       },
     })
+
+    addDragPanFunctionalitySecante(currentChartSecante)
+  }
+
+  function addDragPanFunctionalitySecante(chart) {
+    const canvas = chart.canvas
+
+    canvas.addEventListener('mousedown', (e) => {
+      isDraggingSecante = true
+      lastXSecante = e.clientX
+      lastYSecante = e.clientY
+      canvas.style.cursor = 'grabbing'
+    })
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (!isDraggingSecante) return
+
+      const deltaX = e.clientX - lastXSecante
+      const deltaY = e.clientY - lastYSecante
+
+      if (deltaX !== 0 || deltaY !== 0) {
+        const xScale = chart.scales.x
+        const yScale = chart.scales.y
+
+        if (xScale && yScale) {
+          const pixelRangeX = xScale.max - xScale.min
+          const pixelRangeY = yScale.max - yScale.min
+          
+          const canvasWidth = chart.width
+          const canvasHeight = chart.height
+
+          // Eje X: comportamiento normal (derecha = derecha, izquierda = izquierda)
+          const deltaUnitsX = (deltaX / canvasWidth) * pixelRangeX * -1
+          
+          // Eje Y: COMPORTAMIENTO INVERTIDO (arriba = sube, abajo = baja)
+          const deltaUnitsY = (deltaY / canvasHeight) * pixelRangeY * -1
+
+          // Actualizar límites del eje X (comportamiento normal)
+          chart.options.scales.x.min += deltaUnitsX
+          chart.options.scales.x.max += deltaUnitsX
+          
+          // Actualizar límites del eje Y (COMPORTAMIENTO INVERTIDO)
+          chart.options.scales.y.min -= deltaUnitsY  // Invertido: usar -
+          chart.options.scales.y.max -= deltaUnitsY  // Invertido: usar -
+
+          chart.update()
+
+          setTimeout(() => {
+            resampleChartSecante(chart)
+          }, 50)
+        }
+      }
+
+      lastXSecante = e.clientX
+      lastYSecante = e.clientY
+    })
+
+    canvas.addEventListener('mouseup', () => {
+      isDraggingSecante = false
+      canvas.style.cursor = 'grab'
+    })
+
+    canvas.addEventListener('mouseleave', (e) => {
+      isDraggingSecante = false
+      canvas.style.cursor = 'default'
+      
+      if (e.relatedTarget) {
+        e.relatedTarget.style.cursor = 'default'
+      }
+    })
+
+    canvas.addEventListener('mouseenter', () => {
+      if (!isDraggingSecante) {
+        canvas.style.cursor = 'grab'
+      }
+    })
+
+    canvas.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        isDraggingSecante = true
+        lastXSecante = e.touches[0].clientX
+        lastYSecante = e.touches[0].clientY
+        canvas.style.cursor = 'grabbing'
+        e.preventDefault()
+      }
+    })
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (!isDraggingSecante || e.touches.length !== 1) return
+
+      const deltaX = e.touches[0].clientX - lastXSecante
+      const deltaY = e.touches[0].clientY - lastYSecante
+
+      if (deltaX !== 0 || deltaY !== 0) {
+        const xScale = chart.scales.x
+        const yScale = chart.scales.y
+
+        if (xScale && yScale) {
+          const pixelRangeX = xScale.max - xScale.min
+          const pixelRangeY = yScale.max - yScale.min
+          
+          const canvasWidth = chart.width
+          const canvasHeight = chart.height
+
+          // Eje X: comportamiento normal
+          const deltaUnitsX = (deltaX / canvasWidth) * pixelRangeX * -1
+          
+          // Eje Y: COMPORTAMIENTO INVERTIDO
+          const deltaUnitsY = (deltaY / canvasHeight) * pixelRangeY * 1
+
+          chart.options.scales.x.min += deltaUnitsX
+          chart.options.scales.x.max += deltaUnitsX
+          chart.options.scales.y.min -= deltaUnitsY  // Invertido: usar -
+          chart.options.scales.y.max -= deltaUnitsY  // Invertido: usar -
+
+          chart.update()
+
+          setTimeout(() => {
+            resampleChartSecante(chart)
+          }, 50)
+        }
+      }
+
+      lastXSecante = e.touches[0].clientX
+      lastYSecante = e.touches[0].clientY
+      e.preventDefault()
+    })
+
+    canvas.addEventListener('touchend', () => {
+      isDraggingSecante = false
+      canvas.style.cursor = 'grab'
+    })
+
+    canvas.addEventListener('touchcancel', () => {
+      isDraggingSecante = false
+      canvas.style.cursor = 'default'
+    })
+  }
+
+  function resampleChartSecante(chart) {
+    if (!chart || !currentFunctionSecante) return
+    const xScale = chart.scales && chart.scales.x
+    if (!xScale) return
+    let xMin = typeof xScale.min === 'number' ? xScale.min : -50
+    let xMax = typeof xScale.max === 'number' ? xScale.max : 50
+
+    if (!isFinite(xMin) || !isFinite(xMax) || xMin === xMax) {
+      return
+    }
+
+    const samples = 500
+    const step = (xMax - xMin) / samples
+    const points = []
+    for (let x = xMin; x <= xMax; x += step) {
+      try {
+        const y = currentFunctionSecante.evaluate({ x: x })
+        if (isFinite(y)) points.push({ x: x, y: y })
+      } catch (e) {
+        // ignorar
+      }
+    }
+
+    if (chart.data && chart.data.datasets && chart.data.datasets.length) {
+      chart.data.datasets[0].data = points
+      chart.update('none')
+    }
   }
 
   function executeSecanteMethod(x0, x1, epsilon, maxIter) {
@@ -331,8 +530,8 @@
     }
 
     const points = []
-    const xMin = Math.min(x0, x1, root) - 2
-    const xMax = Math.max(x0, x1, root) + 2
+    const xMin = Math.max(Math.min(x0, x1, root) - 2, -50)
+    const xMax = Math.min(Math.max(x0, x1, root) + 2, 50)
     const step = (xMax - xMin) / 200
 
     for (let x = xMin; x <= xMax; x += step) {
@@ -391,6 +590,10 @@
       options: {
         responsive: true,
         maintainAspectRatio: true,
+        interaction: {
+          mode: 'nearest',
+          intersect: false,
+        },
         plugins: {
           legend: {
             labels: {
@@ -406,10 +609,25 @@
                 enabled: true,
               },
               mode: "xy",
+              onZoom: ({chart}) => {
+                try {
+                  resampleChartSecante(chart)
+                } catch (e) {
+                  console.error('[v0] Error remuestreando resultado al hacer zoom:', e)
+                }
+              },
+              onPan: ({chart}) => {
+                try {
+                  resampleChartSecante(chart)
+                } catch (e) {
+                  console.error('[v0] Error remuestreando resultado al hacer pan:', e)
+                }
+              },
             },
             pan: {
               enabled: true,
               mode: "xy",
+              modifierKey: null,
             },
           },
         },
@@ -442,7 +660,16 @@
             },
           },
         },
+        onHover: (event, elements) => {
+          const canvas = event.native?.target;
+          if (canvas && !isDraggingSecante) {
+            canvas.style.cursor = elements.length > 0 ? 'pointer' : 'grab';
+          }
+        },
+        events: ['mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend'],
       },
     })
+
+    addDragPanFunctionalitySecante(resultChartSecante)
   }
 })()

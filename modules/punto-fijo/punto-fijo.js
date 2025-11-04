@@ -4,6 +4,9 @@
   let currentGFunctionPuntoFijo = null
   let currentChartPuntoFijo = null
   let resultChartPuntoFijo = null
+  let isDraggingPuntoFijo = false
+  let lastXPuntoFijo = 0
+  let lastYPuntoFijo = 0
   const math = window.math
 
   window.initializePuntoFijo = () => {
@@ -182,9 +185,9 @@
     }
 
     const points = []
-    const xMin = -10
-    const xMax = 10
-    const step = 0.1
+    const xMin = -50  // Limitado a 50
+    const xMax = 50   // Limitado a 50
+    const step = 0.5
 
     for (let x = xMin; x <= xMax; x += step) {
       try {
@@ -220,6 +223,10 @@
       options: {
         responsive: true,
         maintainAspectRatio: true,
+        interaction: {
+          mode: 'nearest',
+          intersect: false,
+        },
         plugins: {
           legend: {
             labels: {
@@ -235,10 +242,25 @@
                 enabled: true,
               },
               mode: "xy",
+              onZoom: ({chart}) => {
+                try {
+                  resampleChartPuntoFijo(chart)
+                } catch (e) {
+                  console.error('[v0] Error remuestreando al hacer zoom:', e)
+                }
+              },
+              onPan: ({chart}) => {
+                try {
+                  resampleChartPuntoFijo(chart)
+                } catch (e) {
+                  console.error('[v0] Error remuestreando al hacer pan:', e)
+                }
+              },
             },
             pan: {
               enabled: true,
               mode: "xy",
+              modifierKey: null,
             },
           },
         },
@@ -250,6 +272,8 @@
               text: "x",
               color: "#e0e0e0",
             },
+            min: -50,
+            max: 50,
             ticks: {
               color: "#b0b0b0",
             },
@@ -263,6 +287,8 @@
               text: "f(x)",
               color: "#e0e0e0",
             },
+            min: -50,
+            max: 50,
             ticks: {
               color: "#b0b0b0",
             },
@@ -271,8 +297,181 @@
             },
           },
         },
+        onHover: (event, elements) => {
+          const canvas = event.native?.target;
+          if (canvas && !isDraggingPuntoFijo) {
+            canvas.style.cursor = elements.length > 0 ? 'pointer' : 'grab';
+          }
+        },
+        events: ['mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend'],
       },
     })
+
+    addDragPanFunctionalityPuntoFijo(currentChartPuntoFijo)
+  }
+
+  function addDragPanFunctionalityPuntoFijo(chart) {
+    const canvas = chart.canvas
+
+    canvas.addEventListener('mousedown', (e) => {
+      isDraggingPuntoFijo = true
+      lastXPuntoFijo = e.clientX
+      lastYPuntoFijo = e.clientY
+      canvas.style.cursor = 'grabbing'
+    })
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (!isDraggingPuntoFijo) return
+
+      const deltaX = e.clientX - lastXPuntoFijo
+      const deltaY = e.clientY - lastYPuntoFijo
+
+      if (deltaX !== 0 || deltaY !== 0) {
+        const xScale = chart.scales.x
+        const yScale = chart.scales.y
+
+        if (xScale && yScale) {
+          const pixelRangeX = xScale.max - xScale.min
+          const pixelRangeY = yScale.max - yScale.min
+          
+          const canvasWidth = chart.width
+          const canvasHeight = chart.height
+
+          // Eje X: comportamiento normal (derecha = derecha, izquierda = izquierda)
+          const deltaUnitsX = (deltaX / canvasWidth) * pixelRangeX * -1
+          
+          // Eje Y: COMPORTAMIENTO INVERTIDO (arriba = sube, abajo = baja)
+          const deltaUnitsY = (deltaY / canvasHeight) * pixelRangeY * -1
+
+          // Actualizar límites del eje X (comportamiento normal)
+          chart.options.scales.x.min += deltaUnitsX
+          chart.options.scales.x.max += deltaUnitsX
+          
+          // Actualizar límites del eje Y (COMPORTAMIENTO INVERTIDO)
+          chart.options.scales.y.min -= deltaUnitsY  // Invertido: usar -
+          chart.options.scales.y.max -= deltaUnitsY  // Invertido: usar -
+
+          chart.update()
+
+          setTimeout(() => {
+            resampleChartPuntoFijo(chart)
+          }, 50)
+        }
+      }
+
+      lastXPuntoFijo = e.clientX
+      lastYPuntoFijo = e.clientY
+    })
+
+    canvas.addEventListener('mouseup', () => {
+      isDraggingPuntoFijo = false
+      canvas.style.cursor = 'grab'
+    })
+
+    canvas.addEventListener('mouseleave', (e) => {
+      isDraggingPuntoFijo = false
+      canvas.style.cursor = 'default'
+      
+      if (e.relatedTarget) {
+        e.relatedTarget.style.cursor = 'default'
+      }
+    })
+
+    canvas.addEventListener('mouseenter', () => {
+      if (!isDraggingPuntoFijo) {
+        canvas.style.cursor = 'grab'
+      }
+    })
+
+    canvas.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        isDraggingPuntoFijo = true
+        lastXPuntoFijo = e.touches[0].clientX
+        lastYPuntoFijo = e.touches[0].clientY
+        canvas.style.cursor = 'grabbing'
+        e.preventDefault()
+      }
+    })
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (!isDraggingPuntoFijo || e.touches.length !== 1) return
+
+      const deltaX = e.touches[0].clientX - lastXPuntoFijo
+      const deltaY = e.touches[0].clientY - lastYPuntoFijo
+
+      if (deltaX !== 0 || deltaY !== 0) {
+        const xScale = chart.scales.x
+        const yScale = chart.scales.y
+
+        if (xScale && yScale) {
+          const pixelRangeX = xScale.max - xScale.min
+          const pixelRangeY = yScale.max - yScale.min
+          
+          const canvasWidth = chart.width
+          const canvasHeight = chart.height
+
+          // Eje X: comportamiento normal
+          const deltaUnitsX = (deltaX / canvasWidth) * pixelRangeX * -1
+          
+          // Eje Y: COMPORTAMIENTO INVERTIDO
+          const deltaUnitsY = (deltaY / canvasHeight) * pixelRangeY * 1
+
+          chart.options.scales.x.min += deltaUnitsX
+          chart.options.scales.x.max += deltaUnitsX
+          chart.options.scales.y.min -= deltaUnitsY  // Invertido: usar -
+          chart.options.scales.y.max -= deltaUnitsY  // Invertido: usar -
+
+          chart.update()
+
+          setTimeout(() => {
+            resampleChartPuntoFijo(chart)
+          }, 50)
+        }
+      }
+
+      lastXPuntoFijo = e.touches[0].clientX
+      lastYPuntoFijo = e.touches[0].clientY
+      e.preventDefault()
+    })
+
+    canvas.addEventListener('touchend', () => {
+      isDraggingPuntoFijo = false
+      canvas.style.cursor = 'grab'
+    })
+
+    canvas.addEventListener('touchcancel', () => {
+      isDraggingPuntoFijo = false
+      canvas.style.cursor = 'default'
+    })
+  }
+
+  function resampleChartPuntoFijo(chart) {
+    if (!chart || !currentFunctionPuntoFijo) return
+    const xScale = chart.scales && chart.scales.x
+    if (!xScale) return
+    let xMin = typeof xScale.min === 'number' ? xScale.min : -50
+    let xMax = typeof xScale.max === 'number' ? xScale.max : 50
+
+    if (!isFinite(xMin) || !isFinite(xMax) || xMin === xMax) {
+      return
+    }
+
+    const samples = 500
+    const step = (xMax - xMin) / samples
+    const points = []
+    for (let x = xMin; x <= xMax; x += step) {
+      try {
+        const y = currentFunctionPuntoFijo.evaluate({ x: x })
+        if (isFinite(y)) points.push({ x: x, y: y })
+      } catch (e) {
+        // ignorar
+      }
+    }
+
+    if (chart.data && chart.data.datasets && chart.data.datasets.length) {
+      chart.data.datasets[0].data = points
+      chart.update('none')
+    }
   }
 
   function checkConvergence(a, b, x0, epsilon, maxIter) {
@@ -429,8 +628,8 @@
     }
 
     const points = []
-    const xMin = Math.min(x0, root) - 2
-    const xMax = Math.max(x0, root) + 2
+    const xMin = Math.max(Math.min(x0, root) - 2, -50)
+    const xMax = Math.min(Math.max(x0, root) + 2, 50)
     const step = (xMax - xMin) / 200
 
     for (let x = xMin; x <= xMax; x += step) {
@@ -480,6 +679,10 @@
       options: {
         responsive: true,
         maintainAspectRatio: true,
+        interaction: {
+          mode: 'nearest',
+          intersect: false,
+        },
         plugins: {
           legend: {
             labels: {
@@ -495,10 +698,25 @@
                 enabled: true,
               },
               mode: "xy",
+              onZoom: ({chart}) => {
+                try {
+                  resampleChartPuntoFijo(chart)
+                } catch (e) {
+                  console.error('[v0] Error remuestreando resultado al hacer zoom:', e)
+                }
+              },
+              onPan: ({chart}) => {
+                try {
+                  resampleChartPuntoFijo(chart)
+                } catch (e) {
+                  console.error('[v0] Error remuestreando resultado al hacer pan:', e)
+                }
+              },
             },
             pan: {
               enabled: true,
               mode: "xy",
+              modifierKey: null,
             },
           },
         },
@@ -531,7 +749,16 @@
             },
           },
         },
+        onHover: (event, elements) => {
+          const canvas = event.native?.target;
+          if (canvas && !isDraggingPuntoFijo) {
+            canvas.style.cursor = elements.length > 0 ? 'pointer' : 'grab';
+          }
+        },
+        events: ['mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend'],
       },
     })
+
+    addDragPanFunctionalityPuntoFijo(resultChartPuntoFijo)
   }
 })()

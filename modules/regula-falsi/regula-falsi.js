@@ -147,9 +147,9 @@ function plotFunctionRF() {
   }
 
   const points = []
-  const xMin = -10
-  const xMax = 10
-  const step = 0.1
+  const xMin = -50
+  const xMax = 50
+  const step = 0.5
 
   for (let x = xMin; x <= xMax; x += step) {
     try {
@@ -185,6 +185,10 @@ function plotFunctionRF() {
     options: {
       responsive: true,
       maintainAspectRatio: true,
+      interaction: {
+        mode: 'nearest',
+        intersect: false,
+      },
       plugins: {
         legend: {
           labels: {
@@ -200,10 +204,181 @@ function plotFunctionRF() {
               enabled: true,
             },
             mode: "xy",
+            onZoom: ({chart}) => {
+              try {
+                resampleChartRF(chart)
+              } catch (e) {
+                console.error('[v0] Error remuestreando al hacer zoom:', e)
+              }
+            },
+            onPan: ({chart}) => {
+              try {
+                resampleChartRF(chart)
+              } catch (e) {
+                console.error('[v0] Error remuestreando al hacer pan:', e)
+              }
+            },
           },
           pan: {
             enabled: true,
             mode: "xy",
+            modifierKey: null,
+          },
+        },
+      },
+      scales: {
+        x: {
+          type: "linear",
+          title: {
+            display: true,
+            text: "x",
+            color: "#e0e0e0",
+          },
+          min: -50,
+          max: 50,
+          ticks: {
+            color: "#b0b0b0",
+          },
+          grid: {
+            color: "#2a2a2a",
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: "f(x)",
+            color: "#e0e0e0",
+          },
+          min: -50,
+          max: 50,
+          ticks: {
+            color: "#b0b0b0",
+          },
+          grid: {
+            color: "#2a2a2a",
+          },
+        },
+      },
+      onHover: (event, elements) => {
+        const canvas = event.native?.target;
+        if (canvas && !isDragging) {
+          canvas.style.cursor = elements.length > 0 ? 'pointer' : 'grab';
+        }
+      },
+      events: ['mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend'],
+    },
+  })
+
+  addDragPanFunctionalityRF(currentChartRF)
+}
+
+function plotFunctionWithRootRF(root, a, b) {
+  const canvas = document.getElementById("result-chart-rf")
+  const ctx = canvas.getContext("2d")
+
+  if (resultChartRF) {
+    resultChartRF.destroy()
+  }
+
+  const points = []
+  const xMin = Math.max(Math.min(a, b) - 2)
+  const xMax = Math.min(Math.max(a, b) + 2)
+  const step = (xMax - xMin) / 200
+
+  for (let x = xMin; x <= xMax; x += step) {
+    try {
+      const y = currentFunctionRF.evaluate({ x: x })
+      if (isFinite(y)) {
+        points.push({ x: x, y: y })
+      }
+    } catch (e) {
+      // Ignorar puntos donde la función no está definida
+    }
+  }
+
+  resultChartRF = new Chart(ctx, {
+    type: "line",
+    data: {
+      datasets: [
+        {
+          label: "f(x)",
+          data: points,
+          borderColor: "#5b7cfa",
+          backgroundColor: "rgba(91, 124, 250, 0.1)",
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0.1,
+        },
+        {
+          label: "Punto a",
+          data: [{ x: a, y: currentFunctionRF.evaluate({ x: a }) }],
+          borderColor: "#ff6b6b",
+          backgroundColor: "#ff6b6b",
+          pointRadius: 8,
+          pointStyle: "circle",
+          showLine: false,
+        },
+        {
+          label: "Punto b",
+          data: [{ x: b, y: currentFunctionRF.evaluate({ x: b }) }],
+          borderColor: "#ffd93d",
+          backgroundColor: "#ffd93d",
+          pointRadius: 8,
+          pointStyle: "circle",
+          showLine: false,
+        },
+        {
+          label: "Raíz aproximada",
+          data: [{ x: root, y: currentFunctionRF.evaluate({ x: root }) }],
+          borderColor: "#6bcf7f",
+          backgroundColor: "#6bcf7f",
+          pointRadius: 10,
+          pointStyle: "star",
+          showLine: false,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      interaction: {
+        mode: 'nearest',
+        intersect: false,
+      },
+      plugins: {
+        legend: {
+          labels: {
+            color: "#e0e0e0",
+          },
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: "xy",
+            onZoom: ({chart}) => {
+              try {
+                resampleChartRF(chart)
+              } catch (e) {
+                console.error('[v0] Error remuestreando resultado al hacer zoom:', e)
+              }
+            },
+            onPan: ({chart}) => {
+              try {
+                resampleChartRF(chart)
+              } catch (e) {
+                console.error('[v0] Error remuestreando resultado al hacer pan:', e)
+              }
+            },
+          },
+          pan: {
+            enabled: true,
+            mode: "xy",
+            modifierKey: null,
           },
         },
       },
@@ -236,8 +411,185 @@ function plotFunctionRF() {
           },
         },
       },
+      onHover: (event, elements) => {
+        const canvas = event.native?.target;
+        if (canvas && !isDragging) {
+          canvas.style.cursor = elements.length > 0 ? 'pointer' : 'grab';
+        }
+      },
+      events: ['mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend'],
     },
   })
+
+  addDragPanFunctionalityRF(resultChartRF)
+}
+
+function addDragPanFunctionalityRF(chart) {
+  let isDragging = false
+  let lastX = 0
+  let lastY = 0
+
+  const canvas = chart.canvas
+
+  canvas.addEventListener('mousedown', (e) => {
+    isDragging = true
+    lastX = e.clientX
+    lastY = e.clientY
+    canvas.style.cursor = 'grabbing'
+  })
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (!isDragging) return
+
+    const deltaX = e.clientX - lastX
+    const deltaY = e.clientY - lastY
+
+    if (deltaX !== 0 || deltaY !== 0) {
+      const xScale = chart.scales.x
+      const yScale = chart.scales.y
+
+      if (xScale && yScale) {
+        const pixelRangeX = xScale.max - xScale.min
+        const pixelRangeY = yScale.max - yScale.min
+        
+        const canvasWidth = chart.width
+        const canvasHeight = chart.height
+
+        // Eje X: comportamiento normal (derecha = derecha, izquierda = izquierda)
+        const deltaUnitsX = (deltaX / canvasWidth) * pixelRangeX * -1
+        
+        // Eje Y: COMPORTAMIENTO INVERTIDO (arriba = sube, abajo = baja)
+        const deltaUnitsY = (deltaY / canvasHeight) * pixelRangeY * -1
+
+        // Actualizar límites del eje X (comportamiento normal)
+        chart.options.scales.x.min += deltaUnitsX
+        chart.options.scales.x.max += deltaUnitsX
+        
+        // Actualizar límites del eje Y (COMPORTAMIENTO INVERTIDO)
+        chart.options.scales.y.min -= deltaUnitsY  // Invertido: usar -
+        chart.options.scales.y.max -= deltaUnitsY  // Invertido: usar -
+
+        chart.update()
+
+        setTimeout(() => {
+          resampleChartRF(chart)
+        }, 50)
+      }
+    }
+
+    lastX = e.clientX
+    lastY = e.clientY
+  })
+
+  canvas.addEventListener('mouseup', () => {
+    isDragging = false
+    canvas.style.cursor = 'grab'
+  })
+
+  canvas.addEventListener('mouseleave', (e) => {
+    isDragging = false
+    canvas.style.cursor = 'default'
+    
+    if (e.relatedTarget) {
+      e.relatedTarget.style.cursor = 'default'
+    }
+  })
+
+  canvas.addEventListener('mouseenter', () => {
+    if (!isDragging) {
+      canvas.style.cursor = 'grab'
+    }
+  })
+
+  canvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      isDragging = true
+      lastX = e.touches[0].clientX
+      lastY = e.touches[0].clientY
+      canvas.style.cursor = 'grabbing'
+      e.preventDefault()
+    }
+  })
+
+  canvas.addEventListener('touchmove', (e) => {
+    if (!isDragging || e.touches.length !== 1) return
+
+    const deltaX = e.touches[0].clientX - lastX
+    const deltaY = e.touches[0].clientY - lastY
+
+    if (deltaX !== 0 || deltaY !== 0) {
+      const xScale = chart.scales.x
+      const yScale = chart.scales.y
+
+      if (xScale && yScale) {
+        const pixelRangeX = xScale.max - xScale.min
+        const pixelRangeY = yScale.max - yScale.min
+        
+        const canvasWidth = chart.width
+        const canvasHeight = chart.height
+
+        // Eje X: comportamiento normal
+        const deltaUnitsX = (deltaX / canvasWidth) * pixelRangeX * -1
+        
+        // Eje Y: COMPORTAMIENTO INVERTIDO
+        const deltaUnitsY = (deltaY / canvasHeight) * pixelRangeY * 1
+
+        chart.options.scales.x.min += deltaUnitsX
+        chart.options.scales.x.max += deltaUnitsX
+        chart.options.scales.y.min -= deltaUnitsY  // Invertido: usar -
+        chart.options.scales.y.max -= deltaUnitsY  // Invertido: usar -
+
+        chart.update()
+
+        setTimeout(() => {
+          resampleChartRF(chart)
+        }, 50)
+      }
+    }
+
+    lastX = e.touches[0].clientX
+    lastY = e.touches[0].clientY
+    e.preventDefault()
+  })
+
+  canvas.addEventListener('touchend', () => {
+    isDragging = false
+    canvas.style.cursor = 'grab'
+  })
+
+  canvas.addEventListener('touchcancel', () => {
+    isDragging = false
+    canvas.style.cursor = 'default'
+  })
+}
+
+function resampleChartRF(chart) {
+  if (!chart || !currentFunctionRF) return
+  const xScale = chart.scales && chart.scales.x
+  if (!xScale) return
+  let xMin = typeof xScale.min === 'number' ? xScale.min : -50
+  let xMax = typeof xScale.max === 'number' ? xScale.max : 50
+
+  if (!isFinite(xMin) || !isFinite(xMax) || xMin === xMax) {
+    return
+  }
+
+  const samples = 500
+  const step = (xMax - xMin) / samples
+  const points = []
+  for (let x = xMin; x <= xMax; x += step) {
+    try {
+      const y = currentFunctionRF.evaluate({ x: x })
+      if (isFinite(y)) points.push({ x: x, y: y })
+    } catch (e) {
+      // ignorar
+    }
+  }
+
+  if (chart.data && chart.data.datasets && chart.data.datasets.length) {
+    chart.data.datasets[0].data = points
+    chart.update('none')
+  }
 }
 
 function regulaFalsiMethod(a, b, epsilon, maxIter) {
@@ -321,129 +673,5 @@ function displayResultsRF(result, initialA, initialB) {
   ).toFixed(10)
 
   plotFunctionWithRootRF(result.root, initialA, initialB)
-}
-
-function plotFunctionWithRootRF(root, a, b) {
-  const canvas = document.getElementById("result-chart-rf")
-  const ctx = canvas.getContext("2d")
-
-  if (resultChartRF) {
-    resultChartRF.destroy()
-  }
-
-  const points = []
-  const xMin = Math.min(a, b) - 2
-  const xMax = Math.max(a, b) + 2
-  const step = (xMax - xMin) / 200
-
-  for (let x = xMin; x <= xMax; x += step) {
-    try {
-      const y = currentFunctionRF.evaluate({ x: x })
-      if (isFinite(y)) {
-        points.push({ x: x, y: y })
-      }
-    } catch (e) {
-      // Ignorar puntos donde la función no está definida
-    }
-  }
-
-  resultChartRF = new Chart(ctx, {
-    type: "line",
-    data: {
-      datasets: [
-        {
-          label: "f(x)",
-          data: points,
-          borderColor: "#5b7cfa",
-          backgroundColor: "rgba(91, 124, 250, 0.1)",
-          borderWidth: 2,
-          pointRadius: 0,
-          tension: 0.1,
-        },
-        {
-          label: "Punto a",
-          data: [{ x: a, y: currentFunctionRF.evaluate({ x: a }) }],
-          borderColor: "#ff6b6b",
-          backgroundColor: "#ff6b6b",
-          pointRadius: 8,
-          pointStyle: "circle",
-          showLine: false,
-        },
-        {
-          label: "Punto b",
-          data: [{ x: b, y: currentFunctionRF.evaluate({ x: b }) }],
-          borderColor: "#ffd93d",
-          backgroundColor: "#ffd93d",
-          pointRadius: 8,
-          pointStyle: "circle",
-          showLine: false,
-        },
-        {
-          label: "Raíz aproximada",
-          data: [{ x: root, y: currentFunctionRF.evaluate({ x: root }) }],
-          borderColor: "#6bcf7f",
-          backgroundColor: "#6bcf7f",
-          pointRadius: 10,
-          pointStyle: "star",
-          showLine: false,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: {
-        legend: {
-          labels: {
-            color: "#e0e0e0",
-          },
-        },
-        zoom: {
-          zoom: {
-            wheel: {
-              enabled: true,
-            },
-            pinch: {
-              enabled: true,
-            },
-            mode: "xy",
-          },
-          pan: {
-            enabled: true,
-            mode: "xy",
-          },
-        },
-      },
-      scales: {
-        x: {
-          type: "linear",
-          title: {
-            display: true,
-            text: "x",
-            color: "#e0e0e0",
-          },
-          ticks: {
-            color: "#b0b0b0",
-          },
-          grid: {
-            color: "#2a2a2a",
-          },
-        },
-        y: {
-          title: {
-            display: true,
-            text: "f(x)",
-            color: "#e0e0e0",
-          },
-          ticks: {
-            color: "#b0b0b0",
-          },
-          grid: {
-            color: "#2a2a2a",
-          },
-        },
-      },
-    },
-  })
 }
 })();

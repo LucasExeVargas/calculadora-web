@@ -6,6 +6,9 @@
   let currentChartHalley = null
   let resultChartHalley = null
   let shouldContinueWithoutFourier = false
+  let isDraggingHalley = false
+  let lastXHalley = 0
+  let lastYHalley = 0
   const math = window.math
 
   window.initializeHalley = () => {
@@ -180,9 +183,9 @@
     }
 
     const points = []
-    const xMin = -10
-    const xMax = 10
-    const step = 0.1
+    const xMin = -50  // Limitado a 50
+    const xMax = 50   // Limitado a 50
+    const step = 0.5
 
     for (let x = xMin; x <= xMax; x += step) {
       try {
@@ -218,6 +221,10 @@
       options: {
         responsive: true,
         maintainAspectRatio: true,
+        interaction: {
+          mode: 'nearest',
+          intersect: false,
+        },
         plugins: {
           legend: {
             labels: {
@@ -233,10 +240,25 @@
                 enabled: true,
               },
               mode: "xy",
+              onZoom: ({chart}) => {
+                try {
+                  resampleChartHalley(chart)
+                } catch (e) {
+                  console.error('[v0] Error remuestreando al hacer zoom:', e)
+                }
+              },
+              onPan: ({chart}) => {
+                try {
+                  resampleChartHalley(chart)
+                } catch (e) {
+                  console.error('[v0] Error remuestreando al hacer pan:', e)
+                }
+              },
             },
             pan: {
               enabled: true,
               mode: "xy",
+              modifierKey: null,
             },
           },
         },
@@ -248,6 +270,8 @@
               text: "x",
               color: "#e0e0e0",
             },
+            min: -50,
+            max: 50,
             ticks: {
               color: "#b0b0b0",
             },
@@ -261,6 +285,8 @@
               text: "f(x)",
               color: "#e0e0e0",
             },
+            min: -50,
+            max: 50,
             ticks: {
               color: "#b0b0b0",
             },
@@ -269,8 +295,181 @@
             },
           },
         },
+        onHover: (event, elements) => {
+          const canvas = event.native?.target;
+          if (canvas && !isDraggingHalley) {
+            canvas.style.cursor = elements.length > 0 ? 'pointer' : 'grab';
+          }
+        },
+        events: ['mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend'],
       },
     })
+
+    addDragPanFunctionalityHalley(currentChartHalley)
+  }
+
+  function addDragPanFunctionalityHalley(chart) {
+    const canvas = chart.canvas
+
+    canvas.addEventListener('mousedown', (e) => {
+      isDraggingHalley = true
+      lastXHalley = e.clientX
+      lastYHalley = e.clientY
+      canvas.style.cursor = 'grabbing'
+    })
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (!isDraggingHalley) return
+
+      const deltaX = e.clientX - lastXHalley
+      const deltaY = e.clientY - lastYHalley
+
+      if (deltaX !== 0 || deltaY !== 0) {
+        const xScale = chart.scales.x
+        const yScale = chart.scales.y
+
+        if (xScale && yScale) {
+          const pixelRangeX = xScale.max - xScale.min
+          const pixelRangeY = yScale.max - yScale.min
+          
+          const canvasWidth = chart.width
+          const canvasHeight = chart.height
+
+          // Eje X: comportamiento normal (derecha = derecha, izquierda = izquierda)
+          const deltaUnitsX = (deltaX / canvasWidth) * pixelRangeX * -1
+          
+          // Eje Y: COMPORTAMIENTO INVERTIDO (arriba = sube, abajo = baja)
+          const deltaUnitsY = (deltaY / canvasHeight) * pixelRangeY * -1
+
+          // Actualizar límites del eje X (comportamiento normal)
+          chart.options.scales.x.min += deltaUnitsX
+          chart.options.scales.x.max += deltaUnitsX
+          
+          // Actualizar límites del eje Y (COMPORTAMIENTO INVERTIDO)
+          chart.options.scales.y.min -= deltaUnitsY  // Invertido: usar -
+          chart.options.scales.y.max -= deltaUnitsY  // Invertido: usar -
+
+          chart.update()
+
+          setTimeout(() => {
+            resampleChartHalley(chart)
+          }, 50)
+        }
+      }
+
+      lastXHalley = e.clientX
+      lastYHalley = e.clientY
+    })
+
+    canvas.addEventListener('mouseup', () => {
+      isDraggingHalley = false
+      canvas.style.cursor = 'grab'
+    })
+
+    canvas.addEventListener('mouseleave', (e) => {
+      isDraggingHalley = false
+      canvas.style.cursor = 'default'
+      
+      if (e.relatedTarget) {
+        e.relatedTarget.style.cursor = 'default'
+      }
+    })
+
+    canvas.addEventListener('mouseenter', () => {
+      if (!isDraggingHalley) {
+        canvas.style.cursor = 'grab'
+      }
+    })
+
+    canvas.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        isDraggingHalley = true
+        lastXHalley = e.touches[0].clientX
+        lastYHalley = e.touches[0].clientY
+        canvas.style.cursor = 'grabbing'
+        e.preventDefault()
+      }
+    })
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (!isDraggingHalley || e.touches.length !== 1) return
+
+      const deltaX = e.touches[0].clientX - lastXHalley
+      const deltaY = e.touches[0].clientY - lastYHalley
+
+      if (deltaX !== 0 || deltaY !== 0) {
+        const xScale = chart.scales.x
+        const yScale = chart.scales.y
+
+        if (xScale && yScale) {
+          const pixelRangeX = xScale.max - xScale.min
+          const pixelRangeY = yScale.max - yScale.min
+          
+          const canvasWidth = chart.width
+          const canvasHeight = chart.height
+
+          // Eje X: comportamiento normal
+          const deltaUnitsX = (deltaX / canvasWidth) * pixelRangeX * -1
+          
+          // Eje Y: COMPORTAMIENTO INVERTIDO
+          const deltaUnitsY = (deltaY / canvasHeight) * pixelRangeY * 1
+
+          chart.options.scales.x.min += deltaUnitsX
+          chart.options.scales.x.max += deltaUnitsX
+          chart.options.scales.y.min -= deltaUnitsY  // Invertido: usar -
+          chart.options.scales.y.max -= deltaUnitsY  // Invertido: usar -
+
+          chart.update()
+
+          setTimeout(() => {
+            resampleChartHalley(chart)
+          }, 50)
+        }
+      }
+
+      lastXHalley = e.touches[0].clientX
+      lastYHalley = e.touches[0].clientY
+      e.preventDefault()
+    })
+
+    canvas.addEventListener('touchend', () => {
+      isDraggingHalley = false
+      canvas.style.cursor = 'grab'
+    })
+
+    canvas.addEventListener('touchcancel', () => {
+      isDraggingHalley = false
+      canvas.style.cursor = 'default'
+    })
+  }
+
+  function resampleChartHalley(chart) {
+    if (!chart || !currentFunctionHalley) return
+    const xScale = chart.scales && chart.scales.x
+    if (!xScale) return
+    let xMin = typeof xScale.min === 'number' ? xScale.min : -50
+    let xMax = typeof xScale.max === 'number' ? xScale.max : 50
+
+    if (!isFinite(xMin) || !isFinite(xMax) || xMin === xMax) {
+      return
+    }
+
+    const samples = 500
+    const step = (xMax - xMin) / samples
+    const points = []
+    for (let x = xMin; x <= xMax; x += step) {
+      try {
+        const y = currentFunctionHalley.evaluate({ x: x })
+        if (isFinite(y)) points.push({ x: x, y: y })
+      } catch (e) {
+        // ignorar
+      }
+    }
+
+    if (chart.data && chart.data.datasets && chart.data.datasets.length) {
+      chart.data.datasets[0].data = points
+      chart.update('none')
+    }
   }
 
   function halleyMethod(x0, epsilon, maxIter) {
@@ -366,8 +565,8 @@
     }
 
     const points = []
-    const xMin = Math.min(x0, root) - 2
-    const xMax = Math.max(x0, root) + 2
+    const xMin = Math.max(Math.min(x0, root) - 2, -50)
+    const xMax = Math.min(Math.max(x0, root) + 2, 50)
     const step = (xMax - xMin) / 200
 
     for (let x = xMin; x <= xMax; x += step) {
@@ -417,6 +616,10 @@
       options: {
         responsive: true,
         maintainAspectRatio: true,
+        interaction: {
+          mode: 'nearest',
+          intersect: false,
+        },
         plugins: {
           legend: {
             labels: {
@@ -432,10 +635,25 @@
                 enabled: true,
               },
               mode: "xy",
+              onZoom: ({chart}) => {
+                try {
+                  resampleChartHalley(chart)
+                } catch (e) {
+                  console.error('[v0] Error remuestreando resultado al hacer zoom:', e)
+                }
+              },
+              onPan: ({chart}) => {
+                try {
+                  resampleChartHalley(chart)
+                } catch (e) {
+                  console.error('[v0] Error remuestreando resultado al hacer pan:', e)
+                }
+              },
             },
             pan: {
               enabled: true,
               mode: "xy",
+              modifierKey: null,
             },
           },
         },
@@ -468,8 +686,17 @@
             },
           },
         },
+        onHover: (event, elements) => {
+          const canvas = event.native?.target;
+          if (canvas && !isDraggingHalley) {
+            canvas.style.cursor = elements.length > 0 ? 'pointer' : 'grab';
+          }
+        },
+        events: ['mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend'],
       },
     })
+
+    addDragPanFunctionalityHalley(resultChartHalley)
   }
 
   // Botón Caso de prueba: igual que Newton (e^(-x) - sin(x), x0=0)
